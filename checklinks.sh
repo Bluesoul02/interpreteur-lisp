@@ -2,7 +2,7 @@
 
 if [ ! -d "TDD2022TESTS" ]; then
    echo "Adding main public test repository for branch $2"
-   git submodule add -b $2 --force https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.univ-artois.fr/m1-2021-2022/TDD2022TESTS.git 
+   git submodule add -b $2 --force https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.univ-artois.fr/dlbenseignement/m1-2021-2022/TDD2022TESTS.git 
 fi
 
 if [ ! -d "TDD2021HIDDENTESTS" ]; then
