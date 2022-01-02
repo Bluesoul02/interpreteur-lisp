@@ -135,9 +135,11 @@ sourceSets {
     test {
         java {
             srcDirs = ['TDD2022TESTS/src/test/java','TDD2022OWNTESTS/src/test/java','TDD2021HIDDENTESTS/src/test/java']
+            exclude = '.gitkeep'
         }
         resources {
             srcDirs = ['TDD2022TESTS/src/test/resources','TDD2022OWNTESTS/src/test/resources','TDD2021HIDDENTESTS/src/test/resources']
+            exclude = '.gitkeep'
         }
     }
 }
