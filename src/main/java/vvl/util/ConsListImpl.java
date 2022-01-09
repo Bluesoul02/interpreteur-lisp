@@ -42,7 +42,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsList<E> append(E e) {
 		if (isEmpty()) {
 			cons = new Cons<E, ConsList<E>>(e, null);
-			return this;
 		}
 		else {
 			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
@@ -51,8 +50,8 @@ public class ConsListImpl<E> implements ConsList<E> {
 			consList.setCons(new Cons<E, ConsList<E>>(e, null));
 			consList.setPrev((ConsListImpl<E>) iterator.getCurrent());
 			((ConsListImpl<E>) iterator.getCurrent()).getCons().setRight(consList);
-			return consList;
 		}
+		return this;
 	}
 
 	@Override
@@ -62,14 +61,12 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public E car() {
-		ConsListImpl<E> head = getHead();
-		return head.getCons().left();
+		return cons.left();
 	}
 
 	@Override
 	public ConsList<E> cdr() {
-		ConsListImpl<E> head = getHead();
-		return head.getCons().right();
+		return cons.right() != null ? cons.right() : this;
 	}
 	
 	public ConsListImpl<E> getHead() {
@@ -108,7 +105,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 		if (!isEmpty()) {
 			ConsList<E> head = getHead();
 			ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
-			list = list.concat(cons.left().toString());
+			list = list.concat(car().toString());
 			while (iterator.hasNext()) {
 				list = list.concat(" ");
 				list = list.concat(iterator.next().toString());
@@ -123,7 +120,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 		E result = identity;
 		ConsList<E> head = getHead();
 		ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
-        result = accumulator.apply(result, cons.left());
+        result = accumulator.apply(result, car());
 		while (iterator.hasNext()) {
             result = accumulator.apply(result, iterator.next());
         }
@@ -136,10 +133,10 @@ public class ConsListImpl<E> implements ConsList<E> {
         int i = 0;
 		ConsList<E> head = getHead();
 		ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
-        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).getCons().left();
+        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).car();
 		while (iterator.hasNext()) {
 	        iterator.next();
-	        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).getCons().left();
+	        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).car();
 		}
         return array;
 	}
