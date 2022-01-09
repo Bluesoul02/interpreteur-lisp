@@ -35,8 +35,7 @@ public final class ConsListFactory {
      * @return a list containing only t
      */
     public static <T> ConsList<T> singleton(T t) {
-    	// TODO
-    	throw new UnsupportedOperationException("Not implemented yet");
+    	return new ConsListImpl<T>(new Cons<T, ConsList<T>>(t, null));
     }
 
     /**

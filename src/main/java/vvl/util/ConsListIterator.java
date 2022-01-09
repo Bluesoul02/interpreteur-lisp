@@ -12,13 +12,17 @@ public class ConsListIterator<E> implements Iterator<E>{
 
 	@Override
 	public boolean hasNext() {
-		return current.getCons().right() != null;
+		return current.getCons() != null && current.getCons().right() != null;
 	}
 
 	@Override
 	public E next() {
 		current = (ConsListImpl<E>) current.getCons().right();
-		return current.car();
+		return current.getCons().left();
+	}
+	
+	public ConsList<E> getCurrent() {
+		return current;
 	}
 
 }
