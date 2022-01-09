@@ -24,8 +24,7 @@ public final class ConsListFactory {
      * @return an empty list
      */
     public static <T> ConsList<T> nil() {
-    	// TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+    	return new ConsListImpl<T>();
     }
 
     /**
