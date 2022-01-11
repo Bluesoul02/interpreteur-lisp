@@ -6,19 +6,25 @@ import java.util.NoSuchElementException;
 public class ConsListIterator<E> implements Iterator<E>{
 
 	private ConsListImpl<E> current;
+	private boolean first;
 	
 	public ConsListIterator(ConsListImpl<E> list) {
 		this.current = list;
+		first = true;
 	}
 
 	@Override
 	public boolean hasNext() {
-		return current.getCons() != null && current.getCons().right() != null;
+		return current.getCons() != null && (current.getCons().right() != null || first);
 	}
 
 	@Override
 	public E next() {
-		if (!hasNext())
+		if (first) {
+			first = false;
+			return current.car();
+		}
+		else if (!hasNext())
 			throw new NoSuchElementException("il n'y a pas d'élément suivant");
 		current = (ConsListImpl<E>) current.getCons().right();
 		return current.getCons().left();
