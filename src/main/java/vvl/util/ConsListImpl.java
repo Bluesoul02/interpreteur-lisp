@@ -1,6 +1,7 @@
 package vvl.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
@@ -12,6 +13,14 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsListImpl(Cons<E, ConsList<E>> cons) {
 		super();
 		this.cons = cons;
+	}
+	
+	@SafeVarargs
+	public ConsListImpl(E... ts) {
+		super();
+		for (E e : ts) {
+			append(e);
+		}
 	}
 	
 	public ConsListImpl() {
@@ -61,12 +70,14 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public E car() {
+		if (cons == null)
+			throw new NoSuchElementException("impossible d'appeler car() sur une liste vide");
 		return cons.left();
 	}
 
 	@Override
 	public ConsList<E> cdr() {
-		return cons.right() != null ? cons.right() : this;
+		return cons != null && cons.right() != null ? cons.right() : this;
 	}
 	
 	public ConsListImpl<E> getHead() {
@@ -103,12 +114,15 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public String toString() {
 		String list = "(";
 		if (!isEmpty()) {
+			E next;
 			ConsList<E> head = getHead();
 			ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
-			list = list.concat(car().toString());
+			if (this != null) list = list.concat(car().toString());
 			while (iterator.hasNext()) {
 				list = list.concat(" ");
-				list = list.concat(iterator.next().toString());
+				next = iterator.next();
+				if (next != null) list = list.concat(next.toString());
+				else list = list.concat("null");
 			}
 		}
 		list = list.concat(")");
@@ -139,6 +153,23 @@ public class ConsListImpl<E> implements ConsList<E> {
 	        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).car();
 		}
         return array;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		if (o instanceof @SuppressWarnings("rawtypes") ConsList l) {
+			//ConsList<E> l = (ConsList<E>) o;
+			if (size() != l.size()) return false;
+			if (car() == null) {
+				if (l.car() == null) {
+					return cdr().equals(l.cdr());
+				}
+				else return false;
+			}
+			return car().equals(l.car()) && cdr().equals(l.cdr());
+		}
+		return false;
 	}
 
 	public Cons<E, ConsList<E>> getCons() {

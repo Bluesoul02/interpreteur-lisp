@@ -47,7 +47,6 @@ public final class ConsListFactory {
      */
     @SafeVarargs
     public static <T> ConsList<T> asList(T... ts) {
-    	// TODO
-    	throw new UnsupportedOperationException("Not implemented yet");
+    	return new ConsListImpl<T>(ts);
     }
 }

@@ -1,6 +1,7 @@
 package vvl.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ConsListIterator<E> implements Iterator<E>{
 
@@ -17,6 +18,8 @@ public class ConsListIterator<E> implements Iterator<E>{
 
 	@Override
 	public E next() {
+		if (!hasNext())
+			throw new NoSuchElementException("il n'y a pas d'élément suivant");
 		current = (ConsListImpl<E>) current.getCons().right();
 		return current.getCons().left();
 	}
