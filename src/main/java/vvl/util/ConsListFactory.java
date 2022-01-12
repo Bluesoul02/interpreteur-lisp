@@ -47,6 +47,10 @@ public final class ConsListFactory {
      */
     @SafeVarargs
     public static <T> ConsList<T> asList(T... ts) {
-    	return new ConsListImpl<T>(ts);
+    	ConsList<T> list = nil();
+    	for (T t : ts) {
+    		list = list.append(t);
+		}
+    	return list;
     }
 }

@@ -1,5 +1,6 @@
 package vvl.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.BinaryOperator;
@@ -13,14 +14,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsListImpl(Cons<E, ConsList<E>> cons) {
 		super();
 		this.cons = cons;
-	}
-	
-	@SafeVarargs
-	public ConsListImpl(E... ts) {
-		super();
-		for (E e : ts) {
-			append(e);
-		}
 	}
 	
 	public ConsListImpl() {
@@ -40,7 +33,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 		} 
 		else {
 			ConsListImpl<E> list = new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
-			this.setPrev(list);
 			return list;
 		}
 	}
@@ -49,16 +41,20 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsList<E> append(E e) {
 		if (isEmpty()) {
 			cons = new Cons<E, ConsList<E>>(e, null);
+			return this;
 		}
 		else {
+			ConsListImpl<E> consList = new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
 			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
-			while (iterator.hasNext()) iterator.next();
-			ConsListImpl<E> consList = new ConsListImpl<E>();
-			consList.setCons(new Cons<E, ConsList<E>>(e, null));
-			consList.setPrev((ConsListImpl<E>) iterator.getCurrent());
-			((ConsListImpl<E>) iterator.getCurrent()).getCons().setRight(consList);
+			ArrayList<E> list = new ArrayList<E>();
+			while (iterator.hasNext()) {
+				list.add(iterator.next());
+			}
+			for (int i = list.size() - 1; i >= 0 ; i--) {
+				consList = (ConsListImpl<E>) consList.prepend(list.get(i));
+			}
+			return consList;
 		}
-		return this;
 	}
 
 	@Override
@@ -83,10 +79,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 		ConsListImpl<E> previous = prev;
 		previous = (ConsListImpl<E>) previous.getHead();
 		return previous;
-	}
-	
-	public void setPrev(ConsListImpl<E> prev) {
-		this.prev = prev;
 	}
 
 	@Override
