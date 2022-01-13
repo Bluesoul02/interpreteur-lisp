@@ -8,16 +8,19 @@ import java.util.function.Function;
 
 public class ConsListImpl<E> implements ConsList<E> {
 
-	private ConsListImpl<E> prev;
 	private Cons<E, ConsList<E>> cons;
+	private int size;
 
 	public ConsListImpl(Cons<E, ConsList<E>> cons) {
 		super();
 		this.cons = cons;
+		size = 1;
+		if (cons.right() != null) size = cons.right().size() + 1;
 	}
 	
 	public ConsListImpl() {
 		super();
+		size = 0;
 	}
 
 	@Override
@@ -29,6 +32,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsList<E> prepend(E e) {
 		if (isEmpty()) {
 			cons = new Cons<E, ConsList<E>>(e, null);
+			size++;
 			return this;
 		} 
 		else {
@@ -41,6 +45,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsList<E> append(E e) {
 		if (isEmpty()) {
 			cons = new Cons<E, ConsList<E>>(e, null);
+			size++;
 			return this;
 		}
 		else {
@@ -59,7 +64,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public boolean isEmpty() {
-		return cons == null && prev == null;
+		return cons == null;
 	}
 
 	@Override
@@ -73,31 +78,21 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public ConsList<E> cdr() {
 		return cons != null && cons.right() != null ? cons.right() : this;
 	}
-	
-	public ConsListImpl<E> getHead() {
-		if (prev == null) return this;
-		ConsListImpl<E> previous = prev;
-		previous = (ConsListImpl<E>) previous.getHead();
-		return previous;
-	}
 
 	@Override
 	public int size() {
 		if (isEmpty()) return 0;
-		ConsList<E> head = getHead();
-		int size = 0;
-		ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
-		while (iterator.hasNext()) {
-			size++;
-			iterator.next();
-		}
 		return size;
 	}
 
 	@Override
 	public <T> ConsList<T> map(Function<E, T> f) {
-		// TODO Auto-generated method stub
-		return null;
+		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
+		ConsList<T> list = new ConsListImpl<T>() ;
+		while (iterator.hasNext()) {
+			list = list.append(f.apply(iterator.next()));
+        }
+        return list;
 	}
 	
 	@Override
@@ -105,8 +100,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 		String list = "(";
 		if (!isEmpty()) {
 			E next;
-			ConsList<E> head = getHead();
-			ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
+			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 			while (iterator.hasNext()) {
 				next = iterator.next();
 				if (next != null) list = list.concat(next.toString());
@@ -121,8 +115,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	@Override
 	public E reduce(E identity, BinaryOperator<E> accumulator) {
 		E result = identity;
-		ConsList<E> head = getHead();
-		ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
+		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 		while (iterator.hasNext()) {
             result = accumulator.apply(result, iterator.next());
         }
@@ -133,8 +126,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	public Object[] toArray() {
         Object[] array = new Object[size()];
         int i = 0;
-		ConsList<E> head = getHead();
-		ConsListIterator<E> iterator = (ConsListIterator<E>) head.iterator();
+		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 		while (iterator.hasNext()) {
 	        iterator.next();
 	        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).car();
@@ -142,22 +134,32 @@ public class ConsListImpl<E> implements ConsList<E> {
         return array;
 	}
 	
-//	@Override
-//	public boolean equals(Object o) {
-//		if (o == null) return false;
-//		if (o instanceof @SuppressWarnings("rawtypes") ConsList l) {
-//			//ConsList<E> l = (ConsList<E>) o;
-//			if (size() != l.size()) return false;
-//			if (car() == null) {
-//				if (l.car() == null) {
-//					return cdr().equals(l.cdr());
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) return false;
+		if (getClass() != o.getClass()) return false;
+			ConsListImpl<E> l = (ConsListImpl<E>) o;
+			if (this.size() != l.size()) return false;
+			if (!isEmpty() && !l.isEmpty()) {
+				ConsListIterator<E> iterator = (ConsListIterator<E>) iterator();
+				ConsListIterator<E> oIterator = (ConsListIterator<E>) l.iterator();
+				while (iterator.hasNext()) {
+					if (!oIterator.hasNext()) return false;
+					if (!iterator.next().equals(oIterator.next())) return false;
+				}
+//				if (car() == null) {
+//					if (l.car() == null) {
+//						if (cons.right() == null && l.cons.right() == null) return true;
+//						return cdr().equals(l.cdr());
+//					}
+//					else return false;
 //				}
-//				else return false;
-//			}
-//			return car().equals(l.car()) && cdr().equals(l.cdr());
-//		}
-//		return false;
-//	}
+//				if (cons.right() == null && l.cons.right() == null) return true;
+//				return car().equals(l.car()) && cdr().equals(l.cdr());
+			}
+			return true;
+	}
 
 	public Cons<E, ConsList<E>> getCons() {
 		return cons;

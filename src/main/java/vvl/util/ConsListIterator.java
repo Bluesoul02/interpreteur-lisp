@@ -27,7 +27,7 @@ public class ConsListIterator<E> implements Iterator<E>{
 		else if (!hasNext())
 			throw new NoSuchElementException("il n'y a pas d'élément suivant");
 		current = (ConsListImpl<E>) current.getCons().right();
-		return current.getCons().left();
+		return current.car();
 	}
 	
 	public ConsList<E> getCurrent() {
