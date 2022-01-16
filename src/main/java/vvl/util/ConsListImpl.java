@@ -31,22 +31,17 @@ public class ConsListImpl<E> implements ConsList<E> {
 	@Override
 	public ConsList<E> prepend(E e) {
 		if (isEmpty()) {
-			cons = new Cons<E, ConsList<E>>(e, null);
-			size++;
-			return this;
+			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
 		} 
 		else {
-			ConsListImpl<E> list = new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
-			return list;
+			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
 		}
 	}
 
 	@Override
 	public ConsList<E> append(E e) {
 		if (isEmpty()) {
-			cons = new Cons<E, ConsList<E>>(e, null);
-			size++;
-			return this;
+			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
 		}
 		else {
 			ConsListImpl<E> consList = new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
@@ -76,7 +71,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public ConsList<E> cdr() {
-		return cons != null && cons.right() != null ? cons.right() : this;
+		return cons != null && cons.right() != null ? cons.right() : ConsListFactory.nil();
 	}
 
 	@Override
@@ -88,7 +83,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	@Override
 	public <T> ConsList<T> map(Function<E, T> f) {
 		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
-		ConsList<T> list = new ConsListImpl<T>() ;
+		ConsList<T> list = new ConsListImpl<T>();
 		while (iterator.hasNext()) {
 			list = list.append(f.apply(iterator.next()));
         }
@@ -150,7 +145,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 				}
 //				if (car() == null) {
 //					if (l.car() == null) {
-//						if (cons.right() == null && l.cons.right() == null) return true;
 //						return cdr().equals(l.cdr());
 //					}
 //					else return false;
