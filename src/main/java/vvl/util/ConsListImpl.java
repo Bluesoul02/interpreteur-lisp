@@ -31,7 +31,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	@Override
 	public ConsList<E> prepend(E e) {
 		if (isEmpty()) {
-			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
+			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
 		} 
 		else {
 			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
@@ -59,7 +59,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public boolean isEmpty() {
-		return cons == null;
+		return size == 0;
 	}
 
 	@Override
@@ -143,14 +143,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 					if (!oIterator.hasNext()) return false;
 					if (!iterator.next().equals(oIterator.next())) return false;
 				}
-//				if (car() == null) {
-//					if (l.car() == null) {
-//						return cdr().equals(l.cdr());
-//					}
-//					else return false;
-//				}
-//				if (cons.right() == null && l.cons.right() == null) return true;
-//				return car().equals(l.car()) && cdr().equals(l.cdr());
 			}
 			return true;
 	}

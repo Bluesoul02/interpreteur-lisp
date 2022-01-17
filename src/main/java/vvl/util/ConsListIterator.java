@@ -15,7 +15,7 @@ public class ConsListIterator<E> implements Iterator<E>{
 
 	@Override
 	public boolean hasNext() {
-		return current.getCons() != null && (current.getCons().right() != null || first);
+		return current.getCons() != null && ((current.getCons().right() != null && (((ConsListImpl<E>) current.getCons().right()).getCons()) != null) || first);
 	}
 
 	@Override
