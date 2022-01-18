@@ -18,7 +18,6 @@ public class LispFactory {
      * @return a new lisp interpreter.
      */
     public static Lisp makeInterpreter() {
-    	// TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+    	return new LispImpl();
     }
 }
