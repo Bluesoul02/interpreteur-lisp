@@ -7,12 +7,12 @@ import java.util.regex.Pattern;
 
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
+import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
 
 	@Override
 	public Object parse(String expr) throws LispError {
-		if (expr == null) return null;
 		expr = expr.trim();
 		if (expr.isEmpty()) throw new LispError("String is empty");
 		
@@ -65,10 +65,19 @@ public class LispImpl implements Lisp {
 		return o;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object evaluate(Object ex) throws LispError {
-		// TODO Auto-generated method stub
-		return null;
+		if (ex instanceof ConsList) ex = eval((ConsList<Object>) ex);
+		return ex;
+	}
+	
+	public Object eval(ConsList<Object> consList) {
+		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
+		while (iterator.hasNext()) {
+			
+		}
+		return consList;
 	}
 	
 }
