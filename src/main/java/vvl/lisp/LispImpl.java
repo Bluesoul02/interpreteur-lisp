@@ -13,13 +13,15 @@ public class LispImpl implements Lisp {
 	@Override
 	public Object parse(String expr) throws LispError {
 		if (expr == null) return null;
+		expr = expr.trim();
 		if (expr.isEmpty()) throw new LispError("String is empty");
-		if (!expr.contains("(") && ! expr.contains(")")) return getType(expr);
 		
 		expr = expr.replaceAll("\\(", "( ");
 		expr = expr.replaceAll("\\)", " )");
-		expr = expr.trim();
 		String[] parsed = expr.split("\\s+");
+		
+		if (!expr.contains("(") && ! expr.contains(")") && parsed.length == 1) return getType(expr);
+		else if (!expr.contains("(") && ! expr.contains(")") && parsed.length > 1) throw new LispError("Multiple elements must be in a list");
 		
 		ArrayList<ConsList<Object>> consLists = new ArrayList<ConsList<Object>>();
 		consLists.add(ConsListFactory.nil());
@@ -59,7 +61,7 @@ public class LispImpl implements Lisp {
 		Matcher m = p.matcher(string);
 		if (string.contains(".")) o = Double.valueOf(string);
 		else if (string.contains("#")) o = string.contains("t") ? LispBoolean.TRUE : LispBoolean.FALSE;
-		else if (m.matches()) o = BigInteger.valueOf(Long.valueOf(string));
+		else if (m.matches()) o = new BigInteger(string);
 		return o;
 	}
 
