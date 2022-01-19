@@ -12,26 +12,32 @@ public class LispImpl implements Lisp {
 
 	@Override
 	public Object parse(String expr) throws LispError {
-		if (!expr.contains("(")) return getType(expr);
+		if (expr == null) return null;
+		if (expr.isEmpty()) throw new LispError("String is empty");
+		if (!expr.contains("(") && ! expr.contains(")")) return getType(expr);
 		
 		expr = expr.replaceAll("\\(", "( ");
 		expr = expr.replaceAll("\\)", " )");
 		expr = expr.trim();
-		String[] parsed = expr.split(" +");
+		String[] parsed = expr.split("\\s+");
 		
 		ArrayList<ConsList<Object>> consLists = new ArrayList<ConsList<Object>>();
 		consLists.add(ConsListFactory.nil());
 		int consListScope = 0;
 		boolean first = true;
+		boolean end = false;
 		Object o = null;
 		
 		for (String string : parsed) {
+			if (end) throw new LispError("Parsing already ended");
 			if (!first) {
 				o = getType(string);
 				if (string.contains("(")) {
 					if (consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
 					else consLists.set(consListScope, ConsListFactory.nil());
 				}
+				else if (consListScope < 0 && string.contains(")")) throw new LispError("Too many end of lists");
+				else if (consListScope == 0 && string.contains(")")) end = true;
 				else if (string.contains(")")) {
 					consLists.get(consListScope--).append(o);
 					if (consListScope >= 0)
@@ -40,9 +46,10 @@ public class LispImpl implements Lisp {
 				else {
 					consLists.set(consListScope, consLists.get(consListScope).append(o));
 				}
-			}
+			} else if (!string.contains("(")) throw new LispError("Missing the beginning of the list");
 			first = false;
 		}
+		if (!end) throw new LispError("End of list expected");
 		return consLists.get(0);
 	}
 
