@@ -75,6 +75,7 @@ test {
     useJUnitPlatform()
     
     include '**/*Properties*.class'
+    include '**/*QuickCheck*.class'
 	include '**/*Examples.class'
 	include '**/*Test.class'
 	include '**/*Tests.class'
