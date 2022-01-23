@@ -32,18 +32,6 @@ public class LispImpl implements Lisp {
 		
 		for (String string : parsed) {
 			if (end) throw new LispError("Parsing already ended");
-			if (!expr.contains("(") && !expr.contains(")") && parsed.length == 1) return getType(expr);
-		else if (!expr.contains("(") && !expr.contains(")") && parsed.length >= 1) throw new LispError("Multiple elements must be in a list");
-		
-		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
-		consLists.add(ConsListFactory.nil());
-		var consListScope = 0;
-		var first = true;
-		var end = false;
-		Object o = null;
-		
-		for (String string : parsed) {
-			if (end) throw new LispError("Parsing already ended");
 			if (!first) {
 				o = getType(string);
 				if (string.contains("(") && consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
