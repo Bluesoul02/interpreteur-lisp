@@ -75,7 +75,7 @@ public class LispImpl implements Lisp {
 	public Object eval(ConsList<Object> consList) {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		while (iterator.hasNext()) {
-			
+			iterator.next();
 		}
 		return consList;
 	}
