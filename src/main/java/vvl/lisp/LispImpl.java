@@ -74,8 +74,28 @@ public class LispImpl implements Lisp {
 	
 	public Object eval(ConsList<Object> consList) {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
+		Object o;
+		Pattern p = Pattern.compile("[0-9]+");
+		Matcher m;
 		while (iterator.hasNext()) {
-			iterator.next();
+			o = iterator.next();
+			m = p.matcher(o.toString());
+			if (o.toString().contains("(")) {
+				// ConsList
+			}
+			else if (o.toString().contains("#")) {
+				// Boolean
+			}
+			else if (o.toString().contains(".")) {
+				// Double
+			}
+			else if (m.matches()) {
+				// BigInteger
+				
+			}
+			else {
+				// String
+			}
 		}
 		return consList;
 	}
