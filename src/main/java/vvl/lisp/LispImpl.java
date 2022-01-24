@@ -16,8 +16,8 @@ public class LispImpl implements Lisp {
 		expr = expr.trim();
 		if (expr.isEmpty()) throw new LispError("String is empty");
 		
-		expr = expr.replaceAll("\\(", "( ");
-		expr = expr.replaceAll("\\)", " )");
+		expr = expr.replaceAll("[\\(]", "( ");
+		expr = expr.replaceAll("[\\)]", " )");
 		String[] parsed = expr.split("\\s+");
 		
 		if (!expr.contains("(") && !expr.contains(")") && parsed.length == 1) return getType(expr);
