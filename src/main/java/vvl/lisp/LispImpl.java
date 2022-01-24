@@ -23,7 +23,7 @@ public class LispImpl implements Lisp {
 		if (!expr.contains("(") && ! expr.contains(")") && parsed.length == 1) return getType(expr);
 		else if (!expr.contains("(") && ! expr.contains(")") && parsed.length > 1) throw new LispError("Multiple elements must be in a list");
 		
-		ArrayList<ConsList<Object>> consLists = new ArrayList<ConsList<Object>>();
+		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
 		consLists.add(ConsListFactory.nil());
 		int consListScope = 0;
 		boolean first = true;

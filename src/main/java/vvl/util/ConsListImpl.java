@@ -30,12 +30,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public ConsList<E> prepend(E e) {
-		if (isEmpty()) {
-			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
-		} 
-		else {
-			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
-		}
+		return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, this));
 	}
 
 	@Override
@@ -44,9 +39,9 @@ public class ConsListImpl<E> implements ConsList<E> {
 			return new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
 		}
 		else {
-			ConsListImpl<E> consList = new ConsListImpl<E>(new Cons<E, ConsList<E>>(e, null));
+			ConsListImpl<E> consList = new ConsListImpl<>(new Cons<E, ConsList<E>>(e, null));
 			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
-			ArrayList<E> list = new ArrayList<E>();
+			ArrayList<E> list = new ArrayList<>();
 			while (iterator.hasNext()) {
 				list.add(iterator.next());
 			}
@@ -83,7 +78,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	@Override
 	public <T> ConsList<T> map(Function<E, T> f) {
 		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
-		ConsList<T> list = new ConsListImpl<T>();
+		ConsList<T> list = new ConsListImpl<>();
 		while (iterator.hasNext()) {
 			list = list.append(f.apply(iterator.next()));
         }
@@ -127,6 +122,11 @@ public class ConsListImpl<E> implements ConsList<E> {
 	        array[i++] = ((ConsListImpl<E>) iterator.getCurrent()).car();
 		}
         return array;
+	}
+	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 	
 	@SuppressWarnings("unchecked")
