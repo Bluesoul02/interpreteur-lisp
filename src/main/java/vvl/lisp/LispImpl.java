@@ -54,8 +54,8 @@ public class LispImpl implements Lisp {
 
 	private Object getType(String string) {
 		Object o = string;
-		Pattern p = Pattern.compile("[0-9]+");
-		Matcher m = p.matcher(string);
+		var p = Pattern.compile("[0-9]+");
+		var m = p.matcher(string);
 		if (string.contains(".")) o = Double.valueOf(string);
 		else if (string.contains("#")) o = string.contains("t") ? LispBoolean.TRUE : LispBoolean.FALSE;
 		else if (m.matches()) o = new BigInteger(string);
@@ -72,7 +72,7 @@ public class LispImpl implements Lisp {
 	public Object eval(ConsList<Object> consList) {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
-		Pattern p = Pattern.compile("[0-9]+");
+		var p = Pattern.compile("[0-9]+");
 		Matcher m;
 		// temporaire sonarqube
 		if (consList.toString().contains("(+ 1 2)")) return 3;
