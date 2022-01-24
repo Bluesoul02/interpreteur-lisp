@@ -39,7 +39,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 			return new ConsListImpl<>(new Cons<>(e, null));
 		}
 		else {
-			ConsListImpl<E> consList = new ConsListImpl<>(new Cons<>(e, null));
+			var consList = new ConsListImpl<>(new Cons<>(e, null));
 			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 			ArrayList<E> list = new ArrayList<>();
 			while (iterator.hasNext()) {
@@ -76,7 +76,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public <T> ConsList<T> map(Function<E, T> f) {
-		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
+		Iterator<E> iterator = this.iterator();
 		ConsList<T> list = new ConsListImpl<>();
 		while (iterator.hasNext()) {
 			list = list.append(f.apply(iterator.next()));
@@ -86,10 +86,10 @@ public class ConsListImpl<E> implements ConsList<E> {
 	
 	@Override
 	public String toString() {
-		String list = "(";
+		var list = "(";
 		if (!isEmpty()) {
 			E next;
-			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
+			Iterator<E> iterator = this.iterator();
 			while (iterator.hasNext()) {
 				next = iterator.next();
 				if (next != null) list = list.concat(next.toString());
@@ -103,7 +103,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 	
 	@Override
 	public E reduce(E identity, BinaryOperator<E> accumulator) {
-		E result = identity;
+		var result = identity;
 		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 		while (iterator.hasNext()) {
             result = accumulator.apply(result, iterator.next());
@@ -113,8 +113,8 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public Object[] toArray() {
-        Object[] array = new Object[size()];
-        int i = 0;
+        var array = new Object[size()];
+        var i = 0;
 		ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 		while (iterator.hasNext()) {
 	        iterator.next();
