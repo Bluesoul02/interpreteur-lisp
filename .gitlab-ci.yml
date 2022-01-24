@@ -14,6 +14,7 @@ gradle:
   stage: build
   script: 
       - "gradle --warning-mode all $PROXY test"
+      - "gradle $PROXY $SONARINFO sonarqube"
   tags: 
      - docker2
   artifacts:
