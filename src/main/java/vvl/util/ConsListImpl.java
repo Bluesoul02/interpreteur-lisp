@@ -30,7 +30,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public ConsList<E> prepend(E e) {
-		return new ConsListImpl<>(new Cons<E, ConsList<E>>(e, this));
+		return new ConsListImpl<>(new Cons<>(e, this));
 	}
 
 	@Override
@@ -39,13 +39,13 @@ public class ConsListImpl<E> implements ConsList<E> {
 			return new ConsListImpl<>(new Cons<>(e, null));
 		}
 		else {
-			ConsListImpl<E> consList = new ConsListImpl<>(new Cons<E, ConsList<E>>(e, null));
+			ConsListImpl<E> consList = new ConsListImpl<>(new Cons<>(e, null));
 			ConsListIterator<E> iterator = (ConsListIterator<E>) this.iterator();
 			ArrayList<E> list = new ArrayList<>();
 			while (iterator.hasNext()) {
 				list.add(iterator.next());
 			}
-			for (int i = list.size() - 1; i >= 0 ; i--) {
+			for (var i = list.size() - 1; i >= 0 ; i--) {
 				consList = (ConsListImpl<E>) consList.prepend(list.get(i));
 			}
 			return consList;
@@ -71,7 +71,6 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public int size() {
-		if (isEmpty()) return 0;
 		return size;
 	}
 

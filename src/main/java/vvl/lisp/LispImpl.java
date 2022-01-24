@@ -20,14 +20,16 @@ public class LispImpl implements Lisp {
 		expr = expr.replaceAll("\\)", " )");
 		String[] parsed = expr.split("\\s+");
 		
-		if (!expr.contains("(") && ! expr.contains(")") && parsed.length == 1) return getType(expr);
-		else if (!expr.contains("(") && ! expr.contains(")") && parsed.length > 1) throw new LispError("Multiple elements must be in a list");
+		if (!expr.contains("(") && ! expr.contains(")")) {
+			if (parsed.length == 1)return getType(expr);
+			else throw new LispError("Multiple elements must be in a list");
+		}
 		
 		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
 		consLists.add(ConsListFactory.nil());
-		int consListScope = 0;
-		boolean first = true;
-		boolean end = false;
+		var consListScope = 0;
+		var first = true;
+		var end = false;
 		Object o = null;
 		
 		for (String string : parsed) {
