@@ -8,6 +8,13 @@ variables:
 before_script: 
    - "./checklinks.sh $CI_PROJECT_NAMESPACE $CI_COMMIT_REF_NAME"
    - "git submodule update --remote --init"
+   
+stage: build
+script:
+- "gradle $PROXY test"
+- "gradle $PROXY $SONARINFO sonarqube"
+tags:
+- docker
 
 gradle:
   image: gradle:7.3-jdk11
