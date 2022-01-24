@@ -22,26 +22,41 @@ public class LispImpl implements Lisp {
 		
 		if (!expr.contains("(") && !expr.contains(")") && parsed.length == 1) return getType(expr);
 		else if (!expr.contains("(") && !expr.contains(")") && parsed.length >= 1) throw new LispError("Multiple elements must be in a list");
-		if (!parsed[0].contains("(")) throw new LispError("Missing the beginning of the list");
 
 		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
 		consLists.add(ConsListFactory.nil());
 		var consListScope = 0;
+		var first = true;
 		var end = false;
 		Object o = null;
 		
 		for (String string : parsed) {
 			if (end) throw new LispError("Parsing already ended");
-			o = getType(string);
-			if (string.contains("(") && consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
-			else if (string.contains("(")) consLists.set(consListScope, ConsListFactory.nil());
-			else if (!string.contains(")")) consLists.set(consListScope, consLists.get(consListScope).append(o));
-			else if (consListScope < 0) throw new LispError("Too many end of lists");
-			else if (consListScope == 0) end = true;
-			else {
-				consLists.get(consListScope--).append(o);
-				consLists.set(consListScope, consLists.get(consListScope).append(consLists.get(consListScope + 1)));
-			}
+			if (!expr.contains("(") && !expr.contains(")") && parsed.length == 1) return getType(expr);
+		else if (!expr.contains("(") && !expr.contains(")") && parsed.length >= 1) throw new LispError("Multiple elements must be in a list");
+		
+		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
+		consLists.add(ConsListFactory.nil());
+		var consListScope = 0;
+		var first = true;
+		var end = false;
+		Object o = null;
+		
+		for (String string : parsed) {
+			if (end) throw new LispError("Parsing already ended");
+			if (!first) {
+				o = getType(string);
+				if (string.contains("(") && consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
+				else if (string.contains("(")) consLists.set(consListScope, ConsListFactory.nil());
+				else if (!string.contains(")")) consLists.set(consListScope, consLists.get(consListScope).append(o));
+				else if (consListScope < 0) throw new LispError("Too many end of lists");
+				else if (consListScope == 0) end = true;
+				else {
+					consLists.get(consListScope--).append(o);
+					consLists.set(consListScope, consLists.get(consListScope).append(consLists.get(consListScope + 1)));
+				}
+			} else if (!string.contains("(")) throw new LispError("Missing the beginning of the list");
+			first = false;
 		}
 		if (!end) throw new LispError("End of list expected");
 		return consLists.get(0);
