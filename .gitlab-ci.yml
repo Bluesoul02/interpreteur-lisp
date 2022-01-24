@@ -12,12 +12,13 @@ before_script:
 gradle:
   image: gradle:7.3-jdk11
   stage: build
-  script: 
+  script:
       - "gradle --warning-mode all $PROXY test"
       - "gradle $PROXY test"
       - "gradle $PROXY $SONARINFO sonarqube"
-  tags: 
-     - docker2
+  tags:
+      - docker2
+      - docker
   artifacts:
     when: always
     reports:
