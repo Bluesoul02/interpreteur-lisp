@@ -20,8 +20,7 @@ public class LispImpl implements Lisp {
 		expr = expr.replaceAll("\\)", " )");
 		String[] parsed = expr.split("\\s+");
 		
-		if (!expr.contains("(") && !expr.contains(")") && parsed.length == 1) return getType(expr);
-		else if (!expr.contains("(") && !expr.contains(")") && parsed.length >= 1) throw new LispError("Multiple elements must be in a list");
+		if (!isList(expr, parsed.length)) return getType(expr);
 		
 		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
 		consLists.add(ConsListFactory.nil());
@@ -50,6 +49,12 @@ public class LispImpl implements Lisp {
 		}
 		if (!end) throw new LispError("End of list expected");
 		return consLists.get(0);
+	}
+	
+	private boolean isList(String expr, int length) throws LispError {
+		if (!expr.contains("(") && !expr.contains(")") && length > 1) throw new LispError("Multiple elements must be in a list");
+		else if (!expr.contains("(") && !expr.contains(")") && length == 1) return false;
+		return true;
 	}
 
 	private Object getType(String string) {
