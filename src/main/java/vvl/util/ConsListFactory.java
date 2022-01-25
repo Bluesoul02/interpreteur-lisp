@@ -1,6 +1,5 @@
 package vvl.util;
 
-
 /**
  * Factory to create new lists.
  * 
@@ -14,43 +13,41 @@ package vvl.util;
  */
 public final class ConsListFactory {
 
-    private ConsListFactory() {
-        // do nothing
-    }
+	private ConsListFactory() {
+		// do nothing
+	}
 
-    /**
-     * Create a new empty list.
-     * 
-     * @return an empty list
-     */
-    public static <T> ConsList<T> nil() {
-    	return new ConsListImpl<>();
-    }
+	/**
+	 * Create a new empty list.
+	 * 
+	 * @return an empty list
+	 */
+	public static <T> ConsList<T> nil() {
+		return new ConsListImpl<>();
+	}
 
-    /**
-     * Create a new list containing a single element
-     * 
-     * @param t
-     *            an object
-     * @return a list containing only t
-     */
-    public static <T> ConsList<T> singleton(T t) {
-    	return new ConsListImpl<>(new Cons<>(t, null));
-    }
+	/**
+	 * Create a new list containing a single element
+	 * 
+	 * @param t an object
+	 * @return a list containing only t
+	 */
+	public static <T> ConsList<T> singleton(T t) {
+		return new ConsListImpl<>(new Cons<>(t, null));
+	}
 
-    /**
-     * Create a new list containing the elements given in parameter
-     * 
-     * @param ts
-     *            a variable number of elements
-     * @return a list containing those elements
-     */
-    @SafeVarargs
-    public static <T> ConsList<T> asList(T... ts) {
-    	ConsList<T> list = nil();
-    	for (T t : ts) {
-    		list = list.append(t);
+	/**
+	 * Create a new list containing the elements given in parameter
+	 * 
+	 * @param ts a variable number of elements
+	 * @return a list containing those elements
+	 */
+	@SafeVarargs
+	public static <T> ConsList<T> asList(T... ts) {
+		ConsList<T> list = nil();
+		for (T t : ts) {
+			list = list.append(t);
 		}
-    	return list;
-    }
+		return list;
+	}
 }
