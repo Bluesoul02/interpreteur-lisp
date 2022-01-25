@@ -31,8 +31,7 @@ public class LispImpl implements Lisp {
 		Object o = null;
 
 		for (String string : parsed) {
-			if (end)
-				throw new LispError("Parsing already ended");
+			hasEnded(end);
 			if (!first) {
 				o = getType(string);
 				if (string.contains("(") && consLists.size() <= ++consListScope)
@@ -53,9 +52,18 @@ public class LispImpl implements Lisp {
 				throw new LispError("Missing the beginning of the list");
 			first = false;
 		}
+		hasEndedProperly(end);
+		return consLists.get(0);
+	}
+
+	private void hasEndedProperly(boolean end) throws LispError {
 		if (!end)
 			throw new LispError("End of list expected");
-		return consLists.get(0);
+	}
+
+	private void hasEnded(boolean end) throws LispError {
+		if (end)
+			throw new LispError("Parsing already ended");
 	}
 
 	private boolean isList(String expr, int length) throws LispError {
@@ -93,28 +101,32 @@ public class LispImpl implements Lisp {
 		Object o;
 		var p = Pattern.compile("[0-9]+");
 		Matcher m;
-		var count = 0;
 		String operator = null;
 		ArrayList<Object> operands = new ArrayList<>();
-		Object result;
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
 			m = p.matcher(o.toString());
 			if (o instanceof ConsList) {
-				o = eval((ConsList<Object>) o);
+				operands.add(eval((ConsList<Object>) o));
 			} else if (o.toString().contains("#")) {
 				// Boolean
 			} else if (o.toString().contains(".")) {
 				// Double
 			} else if (m.matches()) {
 				// BigInteger
-
+				operands.add(o);
 			} else {
 				// String
+				operator = (String) o;
 			}
 		}
+		getOperator(operator);
 		return consList;
+	}
+
+	private Operator getOperator(String op) {
+		return null;
 	}
 
 }
