@@ -16,12 +16,11 @@ public class LispImpl implements Lisp {
 		expr = expr.trim();
 		if (expr.isEmpty()) throw new LispError("String is empty");
 		
-		expr = expr.replaceAll("\\(", "( ");
-		expr = expr.replaceAll("\\)", " )");
+		expr = expr.replaceAll("[\\(]", "( ");
+		expr = expr.replaceAll("[\\)]", " )");
 		String[] parsed = expr.split("\\s+");
 		
 		if (!isList(expr, parsed.length)) return getType(expr);
-		
 		ArrayList<ConsList<Object>> consLists = new ArrayList<>();
 		consLists.add(ConsListFactory.nil());
 		var consListScope = 0;
@@ -33,10 +32,8 @@ public class LispImpl implements Lisp {
 			if (end) throw new LispError("Parsing already ended");
 			if (!first) {
 				o = getType(string);
-				if (string.contains("(")) {
-					if (consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
-					else consLists.set(consListScope, ConsListFactory.nil());
-				}
+				if (string.contains("(") && consLists.size() <= ++consListScope) consLists.add(ConsListFactory.nil());
+				else if (string.contains("(")) consLists.set(consListScope, ConsListFactory.nil());
 				else if (!string.contains(")")) consLists.set(consListScope, consLists.get(consListScope).append(o));
 				else if (consListScope < 0) throw new LispError("Too many end of lists");
 				else if (consListScope == 0) end = true;
@@ -59,8 +56,8 @@ public class LispImpl implements Lisp {
 
 	private Object getType(String string) {
 		Object o = string;
-		Pattern p = Pattern.compile("[0-9]+");
-		Matcher m = p.matcher(string);
+		var p = Pattern.compile("[0-9]+");
+		var m = p.matcher(string);
 		if (string.contains(".")) o = Double.valueOf(string);
 		else if (string.contains("#")) o = string.contains("t") ? LispBoolean.TRUE : LispBoolean.FALSE;
 		else if (m.matches()) o = new BigInteger(string);
@@ -77,7 +74,7 @@ public class LispImpl implements Lisp {
 	public Object eval(ConsList<Object> consList) {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
-		Pattern p = Pattern.compile("[0-9]+");
+		var p = Pattern.compile("[0-9]+");
 		Matcher m;
 		// temporaire sonarqube
 		if (consList.toString().contains("(+ 1 2)")) return 3;
