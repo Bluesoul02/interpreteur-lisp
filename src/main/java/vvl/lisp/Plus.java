@@ -5,7 +5,11 @@ import java.util.ArrayList;
 public class Plus implements Operator{
 
 	@Override
-	public <E> E eval(ArrayList<E> list) {
-		return null;
+	public Object apply(ArrayList<Object> list) {
+		Double result = 0.0;
+		for (Object o : list) {
+			result = result + (Double) o;
+		}
+		return result;
 	}
 }

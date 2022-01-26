@@ -121,12 +121,14 @@ public class LispImpl implements Lisp {
 				operator = (String) o;
 			}
 		}
-		getOperator(operator);
+		getOperator(operator).apply(operands);
 		return consList;
 	}
 
 	private Operator getOperator(String op) {
-		return null;
+		if (op.equals("+"))
+			return new Plus();
+		return new Plus();
 	}
 
 }
