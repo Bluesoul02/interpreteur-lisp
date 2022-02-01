@@ -13,12 +13,7 @@ public class LispImpl implements Lisp {
 
 	@Override
 	public Object parse(String expr) throws LispError {
-		expr = expr.trim();
-		if (expr.isEmpty())
-			throw new LispError("String is empty");
-
-		expr = expr.replaceAll("[\\(]", "( ");
-		expr = expr.replaceAll("[\\)]", " )");
+		expr = parsePrep(expr);
 		String[] parsed = expr.split("\\s+");
 
 		if (!isList(expr, parsed.length))
@@ -52,13 +47,19 @@ public class LispImpl implements Lisp {
 				throw new LispError("Missing the beginning of the list");
 			first = false;
 		}
-		hasEndedProperly(end);
-		return consLists.get(0);
-	}
-
-	private void hasEndedProperly(boolean end) throws LispError {
 		if (!end)
 			throw new LispError("End of list expected");
+		return consLists.get(0);
+	}
+	
+	public String parsePrep(String expr) throws LispError {
+		expr = expr.trim();
+		if (expr.isEmpty())
+			throw new LispError("String is empty");
+
+		expr = expr.replaceAll("[\\(]", "( ");
+		expr = expr.replaceAll("[\\)]", " )");
+		return expr;
 	}
 
 	private void hasEnded(boolean end) throws LispError {
@@ -96,7 +97,7 @@ public class LispImpl implements Lisp {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object eval(ConsList<Object> consList) {
+	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
 		var p = Pattern.compile("[0-9]+");
@@ -108,7 +109,7 @@ public class LispImpl implements Lisp {
 			o = iterator.next();
 			m = p.matcher(o.toString());
 			if (o instanceof ConsList) {
-				operands.add(eval((ConsList<Object>) o));
+				//operands.add(eval((ConsList<Object>) o));
 			} else if (o.toString().contains("#")) {
 				// Boolean
 			} else if (o.toString().contains(".")) {
@@ -121,7 +122,8 @@ public class LispImpl implements Lisp {
 				operator = (String) o;
 			}
 		}
-		getOperator(operator).apply(operands);
+		if (operator != null)
+			return getOperator(operator).apply(operands);
 		return consList;
 	}
 
