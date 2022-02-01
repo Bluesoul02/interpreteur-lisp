@@ -51,7 +51,7 @@ public class LispImpl implements Lisp {
 			throw new LispError("End of list expected");
 		return consLists.get(0);
 	}
-	
+
 	public String parsePrep(String expr) throws LispError {
 		expr = expr.trim();
 		if (expr.isEmpty())
@@ -82,7 +82,7 @@ public class LispImpl implements Lisp {
 		if (string.contains("."))
 			o = Double.valueOf(string);
 		else if (string.contains("#"))
-			o = string.contains("t") ? LispBoolean.TRUE : LispBoolean.FALSE;
+			o = LispBoolean.valueOf(string);
 		else if (m.matches())
 			o = new BigInteger(string);
 		return o;
@@ -109,9 +109,10 @@ public class LispImpl implements Lisp {
 			o = iterator.next();
 			m = p.matcher(o.toString());
 			if (o instanceof ConsList) {
-				//operands.add(eval((ConsList<Object>) o));
+				operands.add(eval((ConsList<Object>) o));
 			} else if (o.toString().contains("#")) {
 				// Boolean
+
 			} else if (o.toString().contains(".")) {
 				// Double
 			} else if (m.matches()) {
