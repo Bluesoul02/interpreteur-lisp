@@ -2,6 +2,7 @@ package vvl.lisp;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +11,15 @@ import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
+	private HashMap<String, Operator> operators;
+	
+	public LispImpl() {
+		operators = new HashMap<>();
+		operators.put("+", new Plus());
+		operators.put("or", new Or());
+		operators.put("not", new Not());
+		operators.put("and", new And());
+	}
 
 	@Override
 	public Object parse(String expr) throws LispError {
@@ -124,14 +134,7 @@ public class LispImpl implements Lisp {
 			}
 		}
 		if (operator != null)
-			return getOperator(operator).apply(operands);
+			return operators.get(operator).apply(operands);
 		return consList;
 	}
-
-	private Operator getOperator(String op) {
-		if (op.equals("+"))
-			return new Plus();
-		return new Plus();
-	}
-
 }
