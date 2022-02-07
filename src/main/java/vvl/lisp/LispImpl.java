@@ -3,7 +3,6 @@ package vvl.lisp;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import vvl.util.ConsList;
@@ -12,7 +11,7 @@ import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
 	private HashMap<String, Operator> operators;
-	
+
 	public LispImpl() {
 		operators = new HashMap<>();
 		operators.put("+", new Plus());
@@ -110,28 +109,15 @@ public class LispImpl implements Lisp {
 	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
-		var p = Pattern.compile("[0-9]+");
-		Matcher m;
-		String operator = null;
+		String operator = (String) iterator.next();
 		ArrayList<Object> operands = new ArrayList<>();
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
-			m = p.matcher(o.toString());
 			if (o instanceof ConsList) {
 				operands.add(eval((ConsList<Object>) o));
-			} else if (o.toString().contains("#")) {
-				// Boolean
-				operands.add(o);
-			} else if (o.toString().contains(".")) {
-				// Double
-				operands.add(o);
-			} else if (m.matches()) {
-				// BigInteger
-				operands.add(o);
 			} else {
-				// String
-				operator = (String) o;
+				operands.add(o);
 			}
 		}
 		if (operator != null)
