@@ -122,9 +122,10 @@ public class LispImpl implements Lisp {
 				operands.add(eval((ConsList<Object>) o));
 			} else if (o.toString().contains("#")) {
 				// Boolean
-
+				operands.add(o);
 			} else if (o.toString().contains(".")) {
 				// Double
+				operands.add(o);
 			} else if (m.matches()) {
 				// BigInteger
 				operands.add(o);

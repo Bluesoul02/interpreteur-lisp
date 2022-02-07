@@ -16,6 +16,6 @@ public class Not implements Operator{
 				return apply(array).equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
 			}
 			return list.get(0).equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
-		} else return "Invalid number of operands";
+		} else throw new LispError("Invalid number of operands");
 	}
 }

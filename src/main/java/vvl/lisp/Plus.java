@@ -15,7 +15,8 @@ public class Plus implements Operator {
 		for (Object o : list) {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
-			} else if (o instanceof Double) {
+			} 
+			if (o instanceof Double) {
 				resultDouble += (Double) o;
 				isDouble = true;
 			} else {
