@@ -5,6 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import vvl.operator.And;
+import vvl.operator.Div;
+import vvl.operator.Equals;
+import vvl.operator.LesserThan;
+import vvl.operator.LesserThanOrEquals;
+import vvl.operator.Minus;
+import vvl.operator.Mult;
+import vvl.operator.Not;
+import vvl.operator.Operator;
+import vvl.operator.Or;
+import vvl.operator.Plus;
+import vvl.operator.GreaterThan;
+import vvl.operator.GreaterThanOrEquals;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
@@ -15,6 +28,14 @@ public class LispImpl implements Lisp {
 	public LispImpl() {
 		operators = new HashMap<>();
 		operators.put("+", new Plus());
+		operators.put("-", new Minus());
+		operators.put("*", new Mult());
+		operators.put("/", new Div());
+		operators.put(">", new GreaterThan());
+		operators.put("<", new LesserThan());
+		operators.put(">=", new GreaterThanOrEquals());
+		operators.put("<=", new LesserThanOrEquals());
+		operators.put("=", new Equals());
 		operators.put("or", new Or());
 		operators.put("not", new Not());
 		operators.put("and", new And());

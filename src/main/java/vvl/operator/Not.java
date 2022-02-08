@@ -1,10 +1,13 @@
-package vvl.lisp;
+package vvl.operator;
 
 import java.util.ArrayList;
 
+import vvl.lisp.LispBoolean;
+import vvl.lisp.LispError;
+import vvl.lisp.LispImpl;
 import vvl.util.ConsList;
 
-public class Not implements Operator{
+public class Not implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
@@ -16,6 +19,7 @@ public class Not implements Operator{
 				return apply(array).equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
 			}
 			return list.get(0).equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
-		} else throw new LispError("Invalid number of operands");
+		} else
+			throw new LispError("Invalid number of operands");
 	}
 }

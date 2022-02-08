@@ -1,7 +1,10 @@
-package vvl.lisp;
+package vvl.operator;
 
 import java.util.ArrayList;
 
+import vvl.lisp.LispBoolean;
+import vvl.lisp.LispError;
+import vvl.lisp.LispImpl;
 import vvl.util.ConsList;
 
 public class Or implements Operator {
@@ -13,7 +16,8 @@ public class Or implements Operator {
 			if (o instanceof ConsList) {
 				ArrayList<Object> array = new ArrayList<>();
 				array.add(new LispImpl().evaluate(o));
-				if (apply(array).equals(LispBoolean.TRUE)) return LispBoolean.TRUE;
+				if (apply(array).equals(LispBoolean.TRUE))
+					return LispBoolean.TRUE;
 			} else if (o instanceof LispBoolean && o.equals(LispBoolean.TRUE))
 				return o;
 		}
