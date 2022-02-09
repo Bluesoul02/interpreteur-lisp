@@ -22,7 +22,7 @@ public class Minus implements Operator{
 				resultDouble -= (Double) o;
 				isDouble = true;
 			} else {
-				resBigInt = resBigInt.subtract((BigInteger) o);
+				resBigInt = resBigInt.add((BigInteger) o);
 			}
 		}
 		if (isDouble) {

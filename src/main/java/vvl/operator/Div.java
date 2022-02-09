@@ -19,6 +19,8 @@ public class Div implements Operator {
 				o = new LispImpl().evaluate(o);
 			}
 			if (o instanceof Double) {
+				if (!isDouble)
+					resultDouble = resBigInt.doubleValue();
 				if (o.equals(0.0))
 					throw new LispError("Division by zero");
 				resultDouble /= (Double) o;
@@ -26,14 +28,14 @@ public class Div implements Operator {
 			} else {
 				if (o.equals(BigInteger.ZERO))
 					throw new LispError("Division by zero");
-				resBigInt = resBigInt.divide((BigInteger) o);
+				if (isDouble) {
+					resultDouble /= ((BigInteger)o).doubleValue();
+				} else
+					resBigInt = resBigInt.divide((BigInteger) o);
 			}
 		}
-		if (isDouble) {
-			if (!resBigInt.equals(BigInteger.ZERO))
-				resultDouble /= resBigInt.doubleValue();
+		if (isDouble)
 			return resultDouble;
-		}
 		return resBigInt;
 	}
 
