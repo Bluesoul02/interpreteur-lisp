@@ -32,8 +32,8 @@ public class Minus implements Operator {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
-			if (o instanceof Double d) {
-				resultDouble -= d;
+			if (o instanceof Double) {
+				resultDouble -= (Double) o;
 				isDouble = true;
 			} else {
 				resultDouble -= ((BigInteger) o).doubleValue();

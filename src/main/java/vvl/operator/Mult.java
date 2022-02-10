@@ -18,8 +18,8 @@ public class Mult implements Operator {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			} 
-			if (o instanceof Double d) {
-				resultDouble *= d;
+			if (o instanceof Double) {
+				resultDouble *= (Double) o;
 				isDouble = true;
 			} else {
 				resBigInt = resBigInt.multiply((BigInteger) o);
