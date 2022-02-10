@@ -18,8 +18,8 @@ public class Plus implements Operator {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
-			if (o instanceof Double) {
-				resultDouble += (Double) o;
+			if (o instanceof Double d) {
+				resultDouble += d;
 				isDouble = true;
 			} else {
 				resBigInt = resBigInt.add((BigInteger) o);

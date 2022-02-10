@@ -1,5 +1,6 @@
 package vvl.operator;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -11,32 +12,32 @@ public class Div implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
-		var resultDouble = 0.0;
-		var resBigInt = BigInteger.ZERO;
+		Double resultDouble;
 		var isDouble = false;
-		for (Object o : list) {
+		if (list.isEmpty())
+			throw new LispError("Invalid number of operands");
+		else if (list.get(0) instanceof Double) {
+			resultDouble = (double) list.get(0);
+			isDouble = true;
+		} else
+			resultDouble = ((BigInteger) list.get(0)).doubleValue();
+		Object o;
+		for (int i = 1; i < list.size(); i++) {
+			o = list.get(i);
+			if (o.equals(BigInteger.ZERO)) throw new LispError("Division by zero");
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
-			if (o instanceof Double) {
-				if (!isDouble)
-					resultDouble = resBigInt.doubleValue();
-				if (o.equals(0.0))
-					throw new LispError("Division by zero");
-				resultDouble /= (Double) o;
+			if (o instanceof Double d) {
+				resultDouble /= d;
 				isDouble = true;
 			} else {
-				if (o.equals(BigInteger.ZERO))
-					throw new LispError("Division by zero");
-				if (isDouble) {
-					resultDouble /= ((BigInteger)o).doubleValue();
-				} else
-					resBigInt = resBigInt.divide((BigInteger) o);
+				resultDouble /= ((BigInteger) o).doubleValue();
 			}
 		}
 		if (isDouble)
 			return resultDouble;
-		return resBigInt;
+		return BigDecimal.valueOf(resultDouble).toBigInteger();
 	}
 
 }
