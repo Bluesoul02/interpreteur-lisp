@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import vvl.operator.And;
+import vvl.operator.Car;
 import vvl.operator.ConsOp;
 import vvl.operator.Div;
 import vvl.operator.Equals;
@@ -47,6 +48,7 @@ public class LispImpl implements Lisp {
 		operators.put("if", new If());
 		operators.put("cons", new ConsOp());
 		operators.put("list", new ListOp());
+		operators.put("car", new Car());
 	}
 
 	@Override
