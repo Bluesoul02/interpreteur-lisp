@@ -10,6 +10,7 @@ import vvl.operator.Div;
 import vvl.operator.Equals;
 import vvl.operator.GreaterThan;
 import vvl.operator.GreaterThanOrEquals;
+import vvl.operator.If;
 import vvl.operator.LesserThan;
 import vvl.operator.LesserThanOrEquals;
 import vvl.operator.Minus;
@@ -41,6 +42,7 @@ public class LispImpl implements Lisp {
 		operators.put("not", new Not());
 		operators.put("and", new And());
 		operators.put("quote", new Quote());
+		operators.put("if", new If());
 	}
 
 	@Override
