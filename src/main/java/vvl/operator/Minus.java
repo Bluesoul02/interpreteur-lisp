@@ -14,19 +14,23 @@ public class Minus implements Operator {
 	public Object apply(ArrayList<Object> list) throws LispError {
 		Double resultDouble;
 		var isDouble = false;
+		Object o;
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		else if (list.get(0) instanceof Double) {
+
+		o = list.get(0);
+		if (o instanceof ConsList)
+			o = new LispImpl().evaluate(o);
+		if (o instanceof Double) {
 			if (list.size() == 1)
-				return - (double) list.get(0);
-			resultDouble = (double) list.get(0);
+				return -(double) o;
+			resultDouble = (double) o;
 			isDouble = true;
 		} else {
 			if (list.size() == 1)
-				return ((BigInteger) list.get(0)).negate();
-			resultDouble = ((BigInteger) list.get(0)).doubleValue();
+				return ((BigInteger) o).negate();
+			resultDouble = ((BigInteger) o).doubleValue();
 		}
-		Object o;
 		for (int i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {

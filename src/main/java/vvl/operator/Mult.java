@@ -17,7 +17,7 @@ public class Mult implements Operator {
 		for (Object o : list) {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
-			} 
+			}
 			if (o instanceof Double) {
 				resultDouble *= (Double) o;
 				isDouble = true;

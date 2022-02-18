@@ -1,6 +1,5 @@
 package vvl.operator;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -14,17 +13,25 @@ public class Div implements Operator {
 	public Object apply(ArrayList<Object> list) throws LispError {
 		Double resultDouble;
 		var isDouble = false;
+		Object o;
+
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		else if (list.get(0) instanceof Double) {
-			resultDouble = (double) list.get(0);
+
+		o = list.get(0);
+		if (o instanceof ConsList)
+			o = new LispImpl().evaluate(o);
+
+		if (o instanceof Double) {
+			resultDouble = (double) o;
 			isDouble = true;
 		} else
-			resultDouble = ((BigInteger) list.get(0)).doubleValue();
-		Object o;
+			resultDouble = ((BigInteger) o).doubleValue();
+
 		for (int i = 1; i < list.size(); i++) {
 			o = list.get(i);
-			if (o.equals(BigInteger.ZERO)) throw new LispError("Division by zero");
+			if (o.equals(BigInteger.ZERO))
+				throw new LispError("Division by zero");
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
@@ -37,7 +44,14 @@ public class Div implements Operator {
 		}
 		if (isDouble)
 			return resultDouble;
-		return BigDecimal.valueOf(resultDouble).toBigInteger();
+		return doubleToBigInt(resultDouble);
+	}
+	
+	private BigInteger doubleToBigInt(Double d) {
+		long bits = Double.doubleToLongBits(d);
+		int exp = ((int)(bits >> 52) & 0x7ff) - 1075;
+		BigInteger m = BigInteger.valueOf((bits & (1L << 52) - 1) | (1L << 52)).shiftLeft(exp);
+		return (bits >= 0) ? m : m.negate();
 	}
 
 }

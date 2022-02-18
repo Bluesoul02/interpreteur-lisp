@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import vvl.operator.And;
 import vvl.operator.Div;
 import vvl.operator.Equals;
+import vvl.operator.GreaterThan;
+import vvl.operator.GreaterThanOrEquals;
 import vvl.operator.LesserThan;
 import vvl.operator.LesserThanOrEquals;
 import vvl.operator.Minus;
@@ -16,8 +18,7 @@ import vvl.operator.Not;
 import vvl.operator.Operator;
 import vvl.operator.Or;
 import vvl.operator.Plus;
-import vvl.operator.GreaterThan;
-import vvl.operator.GreaterThanOrEquals;
+import vvl.operator.Quote;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
@@ -39,6 +40,7 @@ public class LispImpl implements Lisp {
 		operators.put("or", new Or());
 		operators.put("not", new Not());
 		operators.put("and", new And());
+		operators.put("quote", new Quote());
 	}
 
 	@Override
@@ -126,7 +128,6 @@ public class LispImpl implements Lisp {
 		return ex;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
@@ -135,11 +136,7 @@ public class LispImpl implements Lisp {
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
-			if (o instanceof ConsList) {
-				operands.add(eval((ConsList<Object>) o));
-			} else {
-				operands.add(o);
-			}
+			operands.add(o);
 		}
 		if (operator != null)
 			return operators.get(operator).apply(operands);
