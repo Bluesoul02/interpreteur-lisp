@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import vvl.operator.And;
+import vvl.operator.ConsOp;
 import vvl.operator.Div;
 import vvl.operator.Equals;
 import vvl.operator.GreaterThan;
@@ -13,6 +14,7 @@ import vvl.operator.GreaterThanOrEquals;
 import vvl.operator.If;
 import vvl.operator.LesserThan;
 import vvl.operator.LesserThanOrEquals;
+import vvl.operator.ListOp;
 import vvl.operator.Minus;
 import vvl.operator.Mult;
 import vvl.operator.Not;
@@ -43,6 +45,8 @@ public class LispImpl implements Lisp {
 		operators.put("and", new And());
 		operators.put("quote", new Quote());
 		operators.put("if", new If());
+		operators.put("cons", new ConsOp());
+		operators.put("list", new ListOp());
 	}
 
 	@Override

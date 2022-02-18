@@ -20,7 +20,7 @@ public class And implements Operator {
 				array.add(new LispImpl().evaluate(o));
 				if (apply(array).equals(LispBoolean.FALSE))
 					return LispBoolean.FALSE;
-			}
+			} else if (!(o instanceof LispBoolean)) throw new LispError("Not a Boolean");
 		}
 		return res;
 	}

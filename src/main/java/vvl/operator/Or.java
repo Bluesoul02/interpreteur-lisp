@@ -18,8 +18,12 @@ public class Or implements Operator {
 				array.add(new LispImpl().evaluate(o));
 				if (apply(array).equals(LispBoolean.TRUE))
 					return LispBoolean.TRUE;
-			} else if (o instanceof LispBoolean && o.equals(LispBoolean.TRUE))
-				return o;
+			} else if (o instanceof LispBoolean) {
+				if (o.equals(LispBoolean.TRUE))
+					return o;
+			}
+			else
+				throw new LispError("Not a Boolean");
 		}
 		return res;
 	}

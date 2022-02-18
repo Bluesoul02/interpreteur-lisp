@@ -15,7 +15,7 @@ public class Div implements Operator {
 		var isDouble = false;
 		Object o;
 
-		if (list.isEmpty())
+		if (list.isEmpty() || list.size() == 1)
 			throw new LispError("Invalid number of operands");
 
 		o = list.get(0);
