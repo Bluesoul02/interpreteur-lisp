@@ -135,6 +135,8 @@ public class LispImpl implements Lisp {
 	public Object evaluate(Object ex) throws LispError {
 		if (ex instanceof ConsList)
 			ex = eval((ConsList<Object>) ex);
+		if (ex.equals("nil"))
+			ex = ConsListFactory.nil();
 		return ex;
 	}
 
@@ -148,8 +150,9 @@ public class LispImpl implements Lisp {
 			o = iterator.next();
 			operands.add(o);
 		}
-		if (operator != null)
+		if (operators.containsKey(operator))
 			return operators.get(operator).apply(operands);
-		return consList;
+		else
+			throw new LispError(operator.concat(" is not a valid operator"));
 	}
 }

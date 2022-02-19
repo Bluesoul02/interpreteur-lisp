@@ -6,6 +6,7 @@ import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.util.Cons;
 import vvl.util.ConsList;
+import vvl.util.ConsListFactory;
 
 public class ConsOp implements Operator {
 
@@ -17,14 +18,15 @@ public class ConsOp implements Operator {
 		if (list.size() == 2) {
 			left = list.get(0);
 			right = list.get(1);
-			if (left instanceof ConsList) {
+			if (left.toString().equals("nil"))
+				left = ConsListFactory.nil();
+			if (right.toString().equals("nil"))
+				right = ConsListFactory.nil();
+			if (left instanceof ConsList && !left.toString().equals("()")) {
 				left = new LispImpl().evaluate(left);
 			}
-			if (right instanceof ConsList) {
+			if (right instanceof ConsList && !right.toString().equals("()")) {
 				right = new LispImpl().evaluate(right);
-			}
-			if (left instanceof ConsList) {
-				return ((ConsList<Object>) left).append(right);
 			}
 			if (right instanceof ConsList) {
 				return ((ConsList<Object>) right).prepend(left);

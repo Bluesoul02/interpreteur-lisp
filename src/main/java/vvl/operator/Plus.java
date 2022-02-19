@@ -21,9 +21,10 @@ public class Plus implements Operator {
 			if (o instanceof Double) {
 				resultDouble += (Double) o;
 				isDouble = true;
-			} else {
+			} else if (o instanceof BigInteger) {
 				resBigInt = resBigInt.add((BigInteger) o);
-			}
+			} else
+				throw new LispError("Not a number");
 		}
 		if (isDouble) {
 			resultDouble += resBigInt.doubleValue();

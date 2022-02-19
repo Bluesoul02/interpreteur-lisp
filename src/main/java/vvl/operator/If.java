@@ -12,7 +12,7 @@ public class If implements Operator {
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
 		Object o;
-		if (list.isEmpty())
+		if (list.size() != 3)
 			throw new LispError("Invalid number of operands");
 
 		o = list.get(0);
