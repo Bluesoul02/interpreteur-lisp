@@ -15,7 +15,7 @@ public class Minus implements Operator {
 		Double resultDouble;
 		var isDouble = false;
 		Object o;
-		if (list.isEmpty())
+		if (list.isEmpty() || list.size() > 2)
 			throw new LispError("Invalid number of operands");
 
 		o = list.get(0);
@@ -31,17 +31,15 @@ public class Minus implements Operator {
 				return ((BigInteger) o).negate();
 			resultDouble = ((BigInteger) o).doubleValue();
 		}
-		for (int i = 1; i < list.size(); i++) {
-			o = list.get(i);
-			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
-			}
-			if (o instanceof Double) {
-				resultDouble -= (Double) o;
-				isDouble = true;
-			} else {
-				resultDouble -= ((BigInteger) o).doubleValue();
-			}
+		o = list.get(1);
+		if (o instanceof ConsList) {
+			o = new LispImpl().evaluate(o);
+		}
+		if (o instanceof Double) {
+			resultDouble -= (Double) o;
+			isDouble = true;
+		} else {
+			resultDouble -= ((BigInteger) o).doubleValue();
 		}
 		if (isDouble)
 			return resultDouble;
