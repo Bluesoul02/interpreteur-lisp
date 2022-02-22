@@ -17,7 +17,7 @@ public class LesserThanOrEquals implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
-		return LispBoolean.valueOf(lt.apply(list).equals(eq.apply(list)));
+		return LispBoolean.valueOf(lt.apply(list).equals(LispBoolean.TRUE) || eq.apply(list).equals(LispBoolean.TRUE));
 	}
 
 }

@@ -16,7 +16,7 @@ public class GreaterThanOrEquals implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
-		return LispBoolean.valueOf(gt.apply(list).equals(eq.apply(list)));
+		return LispBoolean.valueOf(gt.apply(list).equals(LispBoolean.TRUE) || eq.apply(list).equals(LispBoolean.TRUE));
 	}
 
 }
