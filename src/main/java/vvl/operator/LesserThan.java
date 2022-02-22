@@ -21,7 +21,7 @@ public class LesserThan implements Operator {
 		if (o instanceof ConsList)
 			o = new LispImpl().evaluate(o);
 		var prev = o instanceof Double ? (Double) o : ((BigInteger) o).doubleValue();
-		for (int i = 1; i < list.size(); i++) {
+		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);

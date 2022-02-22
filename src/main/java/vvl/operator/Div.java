@@ -46,9 +46,9 @@ public class Div implements Operator {
 	}
 
 	private BigInteger doubleToBigInt(Double d) {
-		long bits = Double.doubleToLongBits(d);
-		int exp = ((int) (bits >> 52) & 0x7ff) - 1075;
-		BigInteger m = BigInteger.valueOf((bits & (1L << 52) - 1) | (1L << 52)).shiftLeft(exp);
+		var bits = Double.doubleToLongBits(d);
+		var exp = ((int) (bits >> 52) & 0x7ff) - 1075;
+		var m = BigInteger.valueOf((bits & (1L << 52) - 1) | (1L << 52)).shiftLeft(exp);
 		return (bits >= 0) ? m : m.negate();
 	}
 
