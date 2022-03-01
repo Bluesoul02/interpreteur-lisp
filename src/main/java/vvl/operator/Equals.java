@@ -27,10 +27,12 @@ public class Equals implements Operator {
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
-			if (o instanceof Double) {
+			if (o instanceof Double && prev instanceof Double) {
 				result = prev.equals(o);
-			} else {
+			} else if (prev instanceof Double) {
 				result = prev.equals(((BigInteger) o).doubleValue());
+			} else {
+				result = prev.equals(o);
 			}
 		}
 		return LispBoolean.valueOf(result);
