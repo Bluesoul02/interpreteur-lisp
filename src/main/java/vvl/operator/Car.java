@@ -9,7 +9,6 @@ import vvl.util.ConsList;
 
 public class Car implements Operator {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
 		if (list.size() == 1) {
@@ -18,9 +17,9 @@ public class Car implements Operator {
 				o = new LispImpl().evaluate(o);
 			}
 			if (o instanceof Cons)
-				return ((Cons) o).left();
+				return ((Cons<?, ?>) o).left();
 			else if (o instanceof ConsList)
-				return ((ConsList) o).car();
+				return ((ConsList<?>) o).car();
 			throw new LispError("Not a Cons");
 		} else
 			throw new LispError("Invalid number of operands");
