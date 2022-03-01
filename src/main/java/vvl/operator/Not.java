@@ -16,7 +16,7 @@ public class Not implements Operator {
 			if (o instanceof ConsList) {
 				ArrayList<Object> array = new ArrayList<>();
 				array.add(new LispImpl().evaluate(o));
-				return apply(array).equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
+				return apply(array);
 			} else if (!(o instanceof LispBoolean))
 				throw new LispError("Not a Boolean");
 			return o.equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
