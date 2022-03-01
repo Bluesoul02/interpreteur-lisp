@@ -16,11 +16,13 @@ public class LesserThan implements Operator {
 		Object o;
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		
-		o = list.get(0);
-		if (o instanceof ConsList)
-			o = new LispImpl().evaluate(o);
-		var prev = o instanceof Double ? (Double) o : ((BigInteger) o).doubleValue();
+
+		Double prev;
+		var res = list.get(0);
+		if (res instanceof ConsList) {
+			res = new LispImpl().evaluate(list.get(0));
+		}
+		prev = res instanceof Double ? (Double) res : ((BigInteger) res).doubleValue();
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {
