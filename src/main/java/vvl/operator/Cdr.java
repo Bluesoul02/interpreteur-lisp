@@ -21,7 +21,7 @@ public class Cdr implements Operator{
 				return ((Cons) o).right();
 			else if (o instanceof ConsList)
 				return ((ConsList) o).cdr();
-			throw new LispError("Not a Cons or a ConsList");
+			throw new LispError("Not a Cons");
 		} else
 			throw new LispError("Invalid number of operands");
 	}

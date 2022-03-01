@@ -21,7 +21,7 @@ public class Car implements Operator {
 				return ((Cons) o).left();
 			else if (o instanceof ConsList)
 				return ((ConsList) o).car();
-			throw new LispError("Not a Cons or a ConsList");
+			throw new LispError("Not a Cons");
 		} else
 			throw new LispError("Invalid number of operands");
 	}
