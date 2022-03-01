@@ -15,7 +15,12 @@ public class Equals implements Operator {
 		var result = true;
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		var prev = list.get(0) instanceof Double ? list.get(0) : ((BigInteger) list.get(0)).doubleValue();
+		Object prev;
+		if (list.get(0) instanceof ConsList) {
+			prev = new LispImpl().evaluate(list.get(0));
+		} else  {
+			prev = list.get(0) instanceof Double ? list.get(0) : ((BigInteger) list.get(0)).doubleValue();
+		}
 		Object o;
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);

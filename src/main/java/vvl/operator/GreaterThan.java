@@ -15,7 +15,12 @@ public class GreaterThan implements Operator {
 		var result = true;
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		var prev = list.get(0) instanceof Double ? (Double) list.get(0) : ((BigInteger) list.get(0)).doubleValue();
+		Double prev;
+		var res = list.get(0);
+		if (res instanceof ConsList) {
+			res = new LispImpl().evaluate(list.get(0));
+		}
+		prev = res instanceof Double ? (Double) res : ((BigInteger) res).doubleValue();
 		Object o;
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
