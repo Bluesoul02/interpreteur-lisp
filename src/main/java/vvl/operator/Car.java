@@ -1,6 +1,7 @@
 package vvl.operator;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
@@ -19,7 +20,11 @@ public class Car implements Operator {
 			if (o instanceof Cons)
 				return ((Cons<?, ?>) o).left();
 			else if (o instanceof ConsList)
-				return ((ConsList<?>) o).car();
+				try {
+					return ((ConsList<?>) o).car();
+				} catch (NoSuchElementException e) {
+					return o;
+				}
 			throw new LispError("Not a Cons");
 		} else
 			throw new LispError("Invalid number of operands");

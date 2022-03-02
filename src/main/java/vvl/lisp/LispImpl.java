@@ -143,7 +143,11 @@ public class LispImpl implements Lisp {
 	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
-		String operator = (String) iterator.next();
+		String operator;
+		if (iterator.hasNext())
+			operator = (String) iterator.next();
+		else
+			return consList;
 		ArrayList<Object> operands = new ArrayList<>();
 
 		while (iterator.hasNext()) {

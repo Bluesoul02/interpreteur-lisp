@@ -59,7 +59,7 @@ public class ConsListImpl<E> implements ConsList<E> {
 
 	@Override
 	public E car() {
-		if (cons == null)
+		if (isEmpty())
 			throw new NoSuchElementException("impossible d'appeler car() sur une liste vide");
 		return cons.left();
 	}
