@@ -3,6 +3,7 @@ package vvl.lisp;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import vvl.operators.And;
@@ -30,6 +31,7 @@ import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
+	private static final String DEFINE = "define";
 	private HashMap<String, Operator> operators;
 	private HashMap<String, Object> vars;
 
@@ -54,7 +56,13 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
-		operators.put("define", new Define(vars));
+		operators.put(DEFINE, new Define(vars));
+	}
+	
+	public LispImpl(Map<String, Object> vars) {
+		this();
+		this.vars = (HashMap<String, Object>) vars;
+		operators.replace(DEFINE, new Define(vars));
 	}
 
 	@Override
@@ -157,7 +165,7 @@ public class LispImpl implements Lisp {
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
-			if (vars.containsKey(o) && !operator.equals("define"))
+			if (vars.containsKey(o) && !operator.equals(DEFINE))
 				o = vars.get(o);
 			operands.add(o);
 		}
