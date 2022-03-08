@@ -1,4 +1,4 @@
-package vvl.operator;
+package vvl.operators;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -8,31 +8,32 @@ import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.util.ConsList;
 
-public class Equals implements Operator {
+public class GreaterThan implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
 		var result = true;
 		if (list.isEmpty())
 			throw new LispError("Invalid number of operands");
-		Object prev;
-		if (list.get(0) instanceof ConsList) {
-			prev = new LispImpl().evaluate(list.get(0));
-		} else  {
-			prev = list.get(0) instanceof Double ? list.get(0) : ((BigInteger) list.get(0)).doubleValue();
+		Double prev;
+		var res = list.get(0);
+		if (res instanceof ConsList) {
+			res = new LispImpl().evaluate(list.get(0));
 		}
+		prev = res instanceof Double ? (Double) res : ((BigInteger) res).doubleValue();
 		Object o;
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {
 				o = new LispImpl().evaluate(o);
 			}
-			if (o instanceof Double && prev instanceof Double) {
-				result = prev.equals(o);
-			} else if (prev instanceof Double) {
-				result = prev.equals(((BigInteger) o).doubleValue());
+			if (o instanceof Double) {
+				result = prev > (Double) o;
+				prev = (Double) o;
 			} else {
-				result = prev.equals(o);
+				Double d = ((BigInteger) o).doubleValue();
+				result = prev > d;
+				prev = d;
 			}
 		}
 		return LispBoolean.valueOf(result);

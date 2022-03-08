@@ -1,4 +1,4 @@
-package vvl.operator;
+package vvl.operators;
 
 import java.util.ArrayList;
 

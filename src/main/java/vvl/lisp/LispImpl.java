@@ -5,34 +5,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import vvl.operator.And;
-import vvl.operator.Car;
-import vvl.operator.Cdr;
-import vvl.operator.ConsOp;
-import vvl.operator.Div;
-import vvl.operator.Equals;
-import vvl.operator.GreaterThan;
-import vvl.operator.GreaterThanOrEquals;
-import vvl.operator.If;
-import vvl.operator.LesserThan;
-import vvl.operator.LesserThanOrEquals;
-import vvl.operator.ListOp;
-import vvl.operator.Minus;
-import vvl.operator.Mult;
-import vvl.operator.Not;
-import vvl.operator.Operator;
-import vvl.operator.Or;
-import vvl.operator.Plus;
-import vvl.operator.Quote;
+import vvl.operators.And;
+import vvl.operators.Car;
+import vvl.operators.Cdr;
+import vvl.operators.ConsOp;
+import vvl.operators.Define;
+import vvl.operators.Div;
+import vvl.operators.Equals;
+import vvl.operators.GreaterThan;
+import vvl.operators.GreaterThanOrEquals;
+import vvl.operators.If;
+import vvl.operators.LesserThan;
+import vvl.operators.LesserThanOrEquals;
+import vvl.operators.ListOp;
+import vvl.operators.Minus;
+import vvl.operators.Mult;
+import vvl.operators.Not;
+import vvl.operators.Operator;
+import vvl.operators.Or;
+import vvl.operators.Plus;
+import vvl.operators.Quote;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
 	private HashMap<String, Operator> operators;
+	private HashMap<String, Object> vars;
 
 	public LispImpl() {
 		operators = new HashMap<>();
+		vars = new HashMap<>();
 		operators.put("+", new Plus());
 		operators.put("-", new Minus());
 		operators.put("*", new Mult());
@@ -51,6 +54,7 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
+		operators.put("define", new Define(vars));
 	}
 
 	@Override
@@ -140,6 +144,7 @@ public class LispImpl implements Lisp {
 		return ex;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
@@ -152,11 +157,18 @@ public class LispImpl implements Lisp {
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
+			if (vars.containsKey(o) && !operator.equals("define"))
+				o = vars.get(o);
 			operands.add(o);
 		}
-		if (operators.containsKey(operator))
-			return operators.get(operator).apply(operands);
-		else
+		if (operators.containsKey(operator)) {
+			Object res = operators.get(operator).apply(operands);
+			if (res instanceof HashMap<?, ?>) {
+				vars = (HashMap<String, Object>) res;
+				return ((HashMap<?, ?>) res).get(operands.get(0));
+			} else
+				return res;
+		} else
 			throw new LispError(operator.concat(" is not a valid operator"));
 	}
 }

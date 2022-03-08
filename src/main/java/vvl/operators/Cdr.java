@@ -1,14 +1,13 @@
-package vvl.operator;
+package vvl.operators;
 
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.util.Cons;
 import vvl.util.ConsList;
 
-public class Car implements Operator {
+public class Cdr implements Operator{
 
 	@Override
 	public Object apply(ArrayList<Object> list) throws LispError {
@@ -18,16 +17,12 @@ public class Car implements Operator {
 				o = new LispImpl().evaluate(o);
 			}
 			if (o instanceof Cons)
-				return ((Cons<?, ?>) o).left();
+				return ((Cons<?, ?>) o).right();
 			else if (o instanceof ConsList)
-				try {
-					return ((ConsList<?>) o).car();
-				} catch (NoSuchElementException e) {
-					return o;
-				}
+				return ((ConsList<?>) o).cdr();
 			throw new LispError("Not a Cons");
 		} else
 			throw new LispError("Invalid number of operands");
 	}
-
+	
 }
