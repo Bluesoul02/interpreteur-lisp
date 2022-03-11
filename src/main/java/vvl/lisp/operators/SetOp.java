@@ -19,7 +19,6 @@ public class SetOp implements Operator {
 	public SetOp(Map<String, Object> vars, List<String> operators) {
 		this.vars = (HashMap<String, Object>) vars;
 		banWords = (ArrayList<String>) operators;
-		banWords.add("nil");
 	}
 
 	public void update(Map<String, Object> vars) {

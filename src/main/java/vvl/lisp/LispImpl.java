@@ -58,8 +58,12 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
-		operators.put(DEFINE, new Define(vars, new ArrayList<>(operators.keySet())));
-		operators.put(SET, new SetOp(vars, new ArrayList<>(operators.keySet())));
+		ArrayList<String> banWords = new ArrayList<>(operators.keySet());
+		banWords.add("nil");
+		banWords.add(DEFINE);
+		banWords.add(SET);
+		operators.put(DEFINE, new Define(vars, banWords));
+		operators.put(SET, new SetOp(vars, banWords));
 	}
 
 	@Override
@@ -144,9 +148,9 @@ public class LispImpl implements Lisp {
 	public Object evaluate(Object ex) throws LispError {
 		if (ex instanceof ConsList)
 			ex = eval((ConsList<Object>) ex);
-		if (ex.equals("nil"))
+		else if (ex.equals("nil"))
 			ex = ConsListFactory.nil();
-		if (ex instanceof String && vars.containsKey(ex))
+		else if (ex instanceof String && vars.containsKey(ex))
 			ex = vars.get(ex);
 		else if (ex instanceof String)
 			throw new UndefinedException((String) ex);
