@@ -1,4 +1,4 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.ConsList;
 
 public class LesserThan implements Operator {
@@ -15,7 +16,7 @@ public class LesserThan implements Operator {
 		var result = true;
 		Object o;
 		if (list.isEmpty())
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 
 		Double prev;
 		var res = list.get(0);

@@ -1,4 +1,4 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 

@@ -6,32 +6,34 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import vvl.operators.And;
-import vvl.operators.Car;
-import vvl.operators.Cdr;
-import vvl.operators.ConsOp;
-import vvl.operators.Define;
-import vvl.operators.Div;
-import vvl.operators.Equals;
-import vvl.operators.GreaterThan;
-import vvl.operators.GreaterThanOrEquals;
-import vvl.operators.If;
-import vvl.operators.LesserThan;
-import vvl.operators.LesserThanOrEquals;
-import vvl.operators.ListOp;
-import vvl.operators.Minus;
-import vvl.operators.Mult;
-import vvl.operators.Not;
-import vvl.operators.Operator;
-import vvl.operators.Or;
-import vvl.operators.Plus;
-import vvl.operators.Quote;
+import vvl.lisp.operators.And;
+import vvl.lisp.operators.Car;
+import vvl.lisp.operators.Cdr;
+import vvl.lisp.operators.ConsOp;
+import vvl.lisp.operators.Define;
+import vvl.lisp.operators.Div;
+import vvl.lisp.operators.Equals;
+import vvl.lisp.operators.GreaterThan;
+import vvl.lisp.operators.GreaterThanOrEquals;
+import vvl.lisp.operators.If;
+import vvl.lisp.operators.LesserThan;
+import vvl.lisp.operators.LesserThanOrEquals;
+import vvl.lisp.operators.ListOp;
+import vvl.lisp.operators.Minus;
+import vvl.lisp.operators.Mult;
+import vvl.lisp.operators.Not;
+import vvl.lisp.operators.Operator;
+import vvl.lisp.operators.Or;
+import vvl.lisp.operators.Plus;
+import vvl.lisp.operators.Quote;
+import vvl.lisp.operators.SetOp;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
 
 public class LispImpl implements Lisp {
 	private static final String DEFINE = "define";
+	private static final String SET = "set!";
 	private HashMap<String, Operator> operators;
 	private HashMap<String, Object> vars;
 
@@ -56,13 +58,15 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
-		operators.put(DEFINE, new Define(vars));
+		operators.put(DEFINE, new Define(vars, operators));
+		operators.put(SET, new SetOp(vars, operators));
 	}
 	
 	public LispImpl(Map<String, Object> vars) {
 		this();
 		this.vars = (HashMap<String, Object>) vars;
-		operators.replace(DEFINE, new Define(vars));
+		operators.replace(DEFINE, new Define(vars, operators));
+		operators.replace(SET, new SetOp(vars, operators));
 	}
 
 	@Override
@@ -165,7 +169,7 @@ public class LispImpl implements Lisp {
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
-			if (vars.containsKey(o) && !operator.equals(DEFINE))
+			if (vars.containsKey(o) && !operator.equals(DEFINE) && !operator.equals(SET))
 				o = vars.get(o);
 			operands.add(o);
 		}
@@ -173,6 +177,8 @@ public class LispImpl implements Lisp {
 			Object res = operators.get(operator).apply(operands);
 			if (res instanceof HashMap<?, ?>) {
 				vars = (HashMap<String, Object>) res;
+				((SetOp) operators.get(SET)).update(vars);
+				((Define) operators.get(DEFINE)).update(vars);
 				return ((HashMap<?, ?>) res).get(operands.get(0));
 			} else
 				return res;

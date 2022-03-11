@@ -1,10 +1,12 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
+import vvl.lisp.exceptions.NotABoolean;
 import vvl.util.ConsList;
 
 public class If implements Operator {
@@ -13,7 +15,7 @@ public class If implements Operator {
 	public Object apply(ArrayList<Object> list) throws LispError {
 		Object o;
 		if (list.size() != 3)
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 
 		o = list.get(0);
 		if (o instanceof ConsList)
@@ -29,7 +31,7 @@ public class If implements Operator {
 				return list.get(2);
 			}
 		} else
-			throw new LispError("Not a Boolean");
+			throw new NotABoolean();
 	}
 
 }

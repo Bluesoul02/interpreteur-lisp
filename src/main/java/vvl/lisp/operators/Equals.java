@@ -1,4 +1,4 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.ConsList;
 
 public class Equals implements Operator {
@@ -14,7 +15,7 @@ public class Equals implements Operator {
 	public Object apply(ArrayList<Object> list) throws LispError {
 		var result = true;
 		if (list.isEmpty())
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 		Object prev;
 		if (list.get(0) instanceof ConsList) {
 			prev = new LispImpl().evaluate(list.get(0));

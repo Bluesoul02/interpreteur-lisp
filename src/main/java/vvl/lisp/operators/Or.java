@@ -1,10 +1,11 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.NotABoolean;
 import vvl.util.ConsList;
 
 public class Or implements Operator {
@@ -21,9 +22,8 @@ public class Or implements Operator {
 			} else if (o instanceof LispBoolean) {
 				if (o.equals(LispBoolean.TRUE))
 					return o;
-			}
-			else
-				throw new LispError("Not a Boolean");
+			} else
+				throw new NotABoolean();
 		}
 		return res;
 	}

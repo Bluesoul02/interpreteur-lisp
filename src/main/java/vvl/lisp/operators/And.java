@@ -1,10 +1,11 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.NotABoolean;
 import vvl.util.ConsList;
 
 public class And implements Operator {
@@ -20,7 +21,7 @@ public class And implements Operator {
 				array.add(new LispImpl().evaluate(o));
 				if (apply(array).equals(LispBoolean.FALSE))
 					return LispBoolean.FALSE;
-			} else if (!(o instanceof LispBoolean)) throw new LispError("Not a Boolean");
+			} else if (!(o instanceof LispBoolean)) throw new NotABoolean();
 		}
 		return res;
 	}

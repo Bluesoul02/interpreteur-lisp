@@ -1,4 +1,4 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.ConsList;
 
 public class Minus implements Operator {
@@ -16,7 +17,7 @@ public class Minus implements Operator {
 		var isDouble = false;
 		Object o;
 		if (list.isEmpty() || list.size() > 2)
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 
 		o = list.get(0);
 		if (o instanceof ConsList)

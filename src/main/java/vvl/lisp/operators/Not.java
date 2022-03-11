@@ -1,10 +1,11 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.ConsList;
 
 public class Not implements Operator {
@@ -21,6 +22,6 @@ public class Not implements Operator {
 				throw new LispError("Not a Boolean");
 			return o.equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
 		} else
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 	}
 }

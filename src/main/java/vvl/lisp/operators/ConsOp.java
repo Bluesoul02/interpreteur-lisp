@@ -1,9 +1,10 @@
-package vvl.operators;
+package vvl.lisp.operators;
 
 import java.util.ArrayList;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.Cons;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
@@ -33,6 +34,6 @@ public class ConsOp implements Operator {
 			}
 			return new Cons<>(left, right);
 		} else
-			throw new LispError("Invalid number of operands");
+			throw new InvalidNumberOfOperands();
 	}
 }
