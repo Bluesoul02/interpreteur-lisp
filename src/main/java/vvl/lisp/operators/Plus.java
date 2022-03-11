@@ -10,13 +10,13 @@ import vvl.util.ConsList;
 public class Plus implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		var resultDouble = 0.0;
 		var resBigInt = BigInteger.ZERO;
 		var isDouble = false;
 		for (Object o : list) {
 			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
+				o = lispImpl.evaluate(o);
 			}
 			if (o instanceof Double) {
 				resultDouble += (Double) o;

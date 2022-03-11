@@ -12,11 +12,11 @@ import vvl.util.ConsList;
 public class Car implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		if (list.size() == 1) {
 			var o = list.get(0);
 			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
+				o = lispImpl.evaluate(o);
 			}
 			if (o instanceof Cons)
 				return ((Cons<?, ?>) o).left();

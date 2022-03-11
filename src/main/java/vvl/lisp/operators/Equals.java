@@ -12,13 +12,13 @@ import vvl.util.ConsList;
 public class Equals implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		var result = true;
 		if (list.isEmpty())
 			throw new InvalidNumberOfOperands();
 		Object prev;
 		if (list.get(0) instanceof ConsList) {
-			prev = new LispImpl().evaluate(list.get(0));
+			prev = lispImpl.evaluate(list.get(0));
 		} else  {
 			prev = list.get(0) instanceof Double ? list.get(0) : ((BigInteger) list.get(0)).doubleValue();
 		}
@@ -26,7 +26,7 @@ public class Equals implements Operator {
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
+				o = lispImpl.evaluate(o);
 			}
 			if (o instanceof Double && prev instanceof Double) {
 				result = prev.equals(o);

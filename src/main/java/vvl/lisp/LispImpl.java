@@ -3,7 +3,6 @@ package vvl.lisp;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import vvl.lisp.exceptions.UndefinedException;
@@ -38,8 +37,6 @@ public class LispImpl implements Lisp {
 	private HashMap<String, Operator> operators;
 	private HashMap<String, Object> vars;
 	
-	// TODO : SINGLETON
-
 	public LispImpl() {
 		operators = new HashMap<>();
 		vars = new HashMap<>();
@@ -61,15 +58,8 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
-		operators.put(DEFINE, new Define(vars, operators));
-		operators.put(SET, new SetOp(vars, operators));
-	}
-	
-	public LispImpl(Map<String, Object> vars) {
-		this();
-		this.vars = (HashMap<String, Object>) vars;
-		operators.replace(DEFINE, new Define(vars, operators));
-		operators.replace(SET, new SetOp(vars, operators));
+		operators.put(DEFINE, new Define(vars, new ArrayList<>(operators.keySet())));
+		operators.put(SET, new SetOp(vars, new ArrayList<>(operators.keySet())));
 	}
 
 	@Override
@@ -181,7 +171,7 @@ public class LispImpl implements Lisp {
 			operands.add(o);
 		}
 		if (operators.containsKey(operator)) {
-			Object res = operators.get(operator).apply(operands);
+			Object res = operators.get(operator).apply(operands, this);
 			if (res instanceof HashMap<?, ?>) {
 				vars = (HashMap<String, Object>) res;
 				((SetOp) operators.get(SET)).update(vars);

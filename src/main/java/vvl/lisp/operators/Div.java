@@ -11,7 +11,7 @@ import vvl.util.ConsList;
 public class Div implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		Double resultDouble;
 		var isDouble = false;
 		Object o;
@@ -21,7 +21,7 @@ public class Div implements Operator {
 
 		o = list.get(0);
 		if (o instanceof ConsList)
-			o = new LispImpl().evaluate(o);
+			o = lispImpl.evaluate(o);
 
 		if (o instanceof Double) {
 			resultDouble = (double) o;
@@ -33,7 +33,7 @@ public class Div implements Operator {
 		if (o.equals(BigInteger.ZERO))
 			throw new LispError("Division by zero");
 		if (o instanceof ConsList) {
-			o = new LispImpl().evaluate(o);
+			o = lispImpl.evaluate(o);
 		}
 		if (o instanceof Double) {
 			resultDouble /= (Double) o;

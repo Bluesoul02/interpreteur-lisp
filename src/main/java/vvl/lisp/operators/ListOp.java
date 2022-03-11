@@ -10,12 +10,12 @@ import vvl.util.ConsListImpl;
 public class ListOp implements Operator{
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		ConsList<Object> consList = new ConsListImpl<>();
 		
 		for (Object o : list) {
 			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
+				o = lispImpl.evaluate(o);
 			}
 			consList = consList.append(o);
 		}

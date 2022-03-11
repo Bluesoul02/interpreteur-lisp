@@ -11,13 +11,13 @@ import vvl.util.ConsList;
 public class Or implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		LispBoolean res = LispBoolean.FALSE;
 		for (Object o : list) {
 			if (o instanceof ConsList) {
 				ArrayList<Object> array = new ArrayList<>();
-				array.add(new LispImpl().evaluate(o));
-				if (apply(array).equals(LispBoolean.TRUE))
+				array.add(lispImpl.evaluate(o));
+				if (apply(array, lispImpl).equals(LispBoolean.TRUE))
 					return LispBoolean.TRUE;
 			} else if (o instanceof LispBoolean) {
 				if (o.equals(LispBoolean.TRUE))

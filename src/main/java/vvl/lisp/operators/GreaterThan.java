@@ -12,21 +12,21 @@ import vvl.util.ConsList;
 public class GreaterThan implements Operator {
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		var result = true;
 		if (list.isEmpty())
 			throw new InvalidNumberOfOperands();
 		Double prev;
 		var res = list.get(0);
 		if (res instanceof ConsList) {
-			res = new LispImpl().evaluate(list.get(0));
+			res = lispImpl.evaluate(list.get(0));
 		}
 		prev = res instanceof Double ? (Double) res : ((BigInteger) res).doubleValue();
 		Object o;
 		for (var i = 1; i < list.size(); i++) {
 			o = list.get(i);
 			if (o instanceof ConsList) {
-				o = new LispImpl().evaluate(o);
+				o = lispImpl.evaluate(o);
 			}
 			if (o instanceof Double) {
 				result = prev > (Double) o;

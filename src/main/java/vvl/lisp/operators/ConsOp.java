@@ -13,7 +13,7 @@ public class ConsOp implements Operator {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
 		Object left;
 		Object right;
 		if (list.size() == 2) {
@@ -24,10 +24,10 @@ public class ConsOp implements Operator {
 			if (right.toString().equals("nil"))
 				right = ConsListFactory.nil();
 			if (left instanceof ConsList && !left.toString().equals("()")) {
-				left = new LispImpl().evaluate(left);
+				left = lispImpl.evaluate(left);
 			}
 			if (right instanceof ConsList && !right.toString().equals("()")) {
-				right = new LispImpl().evaluate(right);
+				right = lispImpl.evaluate(right);
 			}
 			if (right instanceof ConsList) {
 				return ((ConsList<Object>) right).prepend(left);

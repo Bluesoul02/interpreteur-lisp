@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
+import vvl.lisp.LispImpl;
 
 public class LesserThanOrEquals implements Operator {
 
@@ -16,8 +17,8 @@ public class LesserThanOrEquals implements Operator {
 	}
 
 	@Override
-	public Object apply(ArrayList<Object> list) throws LispError {
-		return LispBoolean.valueOf(lt.apply(list).equals(LispBoolean.TRUE) || eq.apply(list).equals(LispBoolean.TRUE));
+	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
+		return LispBoolean.valueOf(lt.apply(list, lispImpl).equals(LispBoolean.TRUE) || eq.apply(list, lispImpl).equals(LispBoolean.TRUE));
 	}
 
 }
