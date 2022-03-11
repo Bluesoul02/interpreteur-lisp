@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import vvl.lisp.exceptions.UndefinedException;
 import vvl.lisp.operators.And;
 import vvl.lisp.operators.Car;
 import vvl.lisp.operators.Cdr;
@@ -36,6 +37,8 @@ public class LispImpl implements Lisp {
 	private static final String SET = "set!";
 	private HashMap<String, Operator> operators;
 	private HashMap<String, Object> vars;
+	
+	// TODO : SINGLETON
 
 	public LispImpl() {
 		operators = new HashMap<>();
@@ -153,6 +156,10 @@ public class LispImpl implements Lisp {
 			ex = eval((ConsList<Object>) ex);
 		if (ex.equals("nil"))
 			ex = ConsListFactory.nil();
+		if (ex instanceof String && vars.containsKey(ex))
+			ex = vars.get(ex);
+		else if (ex instanceof String)
+			throw new UndefinedException((String) ex);
 		return ex;
 	}
 
