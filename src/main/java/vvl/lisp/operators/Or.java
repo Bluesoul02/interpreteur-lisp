@@ -17,10 +17,10 @@ public class Or implements Operator {
 			if (o instanceof ConsList) {
 				ArrayList<Object> array = new ArrayList<>();
 				array.add(lispImpl.evaluate(o));
-				if (apply(array, lispImpl).equals(LispBoolean.TRUE))
+				if (((LispBoolean) apply(array, lispImpl)).value())
 					return LispBoolean.TRUE;
 			} else if (o instanceof LispBoolean) {
-				if (o.equals(LispBoolean.TRUE))
+				if (((LispBoolean) o).value())
 					return o;
 			} else
 				throw new NotABoolean();

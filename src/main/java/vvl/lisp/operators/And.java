@@ -19,7 +19,7 @@ public class And implements Operator {
 			else if (o instanceof ConsList) {
 				ArrayList<Object> array = new ArrayList<>();
 				array.add(lispImpl.evaluate(o));
-				if (apply(array, lispImpl).equals(LispBoolean.FALSE))
+				if (!((LispBoolean) apply(array, lispImpl)).value())
 					return LispBoolean.FALSE;
 			} else if (!(o instanceof LispBoolean)) throw new NotABoolean();
 		}

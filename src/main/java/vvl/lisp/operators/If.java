@@ -21,7 +21,7 @@ public class If implements Operator {
 		if (o instanceof ConsList)
 			o = lispImpl.evaluate(o);
 		if (o instanceof LispBoolean) {
-			if (o.equals(LispBoolean.TRUE)) {
+			if (((LispBoolean) o).value()) {
 				if (list.get(1) instanceof ConsList)
 					return lispImpl.evaluate(list.get(1));
 				return list.get(1);

@@ -141,15 +141,11 @@ public class ConsListImpl<E> implements ConsList<E> {
 		ConsListImpl<E> l = (ConsListImpl<E>) o;
 		if (this.size() != l.size())
 			return false;
-		if (!isEmpty() && !l.isEmpty()) {
-			ConsListIterator<E> iterator = (ConsListIterator<E>) iterator();
-			ConsListIterator<E> oIterator = (ConsListIterator<E>) l.iterator();
-			while (iterator.hasNext()) {
-				if (!oIterator.hasNext())
-					return false;
-				if (!iterator.next().equals(oIterator.next()))
-					return false;
-			}
+		ConsListIterator<E> iterator = (ConsListIterator<E>) iterator();
+		ConsListIterator<E> oIterator = (ConsListIterator<E>) l.iterator();
+		while (iterator.hasNext()) {
+			if (!iterator.next().equals(oIterator.next()))
+				return false;
 		}
 		return true;
 	}

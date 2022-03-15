@@ -6,6 +6,7 @@ import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.lisp.exceptions.InvalidNumberOfOperands;
+import vvl.lisp.exceptions.NotABoolean;
 import vvl.util.ConsList;
 
 public class Not implements Operator {
@@ -19,7 +20,7 @@ public class Not implements Operator {
 				array.add(lispImpl.evaluate(o));
 				return apply(array, lispImpl);
 			} else if (!(o instanceof LispBoolean))
-				throw new LispError("Not a Boolean");
+				throw new NotABoolean();
 			return o.equals(LispBoolean.TRUE) ? LispBoolean.FALSE : LispBoolean.TRUE;
 		} else
 			throw new InvalidNumberOfOperands();
