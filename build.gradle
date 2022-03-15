@@ -103,7 +103,7 @@ jacoco {
 }
 
 pitest {
-    targetClasses = ['vvl.util.*','vvl.lisp.*','vvl.bdd.*']  
+    targetClasses = ['vvl.util.*','vvl.lisp.*', 'vvl.lisp.operators.*', 'vvl.lisp.exceptions.*', 'vvl.bdd.*']  
     junit5PluginVersion = '0.15'
     threads = 4
     outputFormats = ['HTML','XML']

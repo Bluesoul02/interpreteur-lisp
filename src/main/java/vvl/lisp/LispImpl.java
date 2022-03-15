@@ -16,7 +16,6 @@ import vvl.lisp.operators.Equals;
 import vvl.lisp.operators.GreaterThan;
 import vvl.lisp.operators.GreaterThanOrEquals;
 import vvl.lisp.operators.If;
-import vvl.lisp.operators.Lambda;
 import vvl.lisp.operators.LesserThan;
 import vvl.lisp.operators.LesserThanOrEquals;
 import vvl.lisp.operators.ListOp;
@@ -59,11 +58,11 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
-		operators.put("lambda", new Lambda());
 		ArrayList<String> banWords = new ArrayList<>(operators.keySet());
 		banWords.add("nil");
 		banWords.add(DEFINE);
 		banWords.add(SET);
+		banWords.add("lambda");
 		operators.put(DEFINE, new Define(vars, banWords));
 		operators.put(SET, new SetOp(vars, banWords));
 	}
