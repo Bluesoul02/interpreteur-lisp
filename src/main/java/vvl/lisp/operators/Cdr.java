@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.lisp.exceptions.InvalidNumberOfOperands;
+import vvl.lisp.exceptions.NotACons;
 import vvl.util.Cons;
 import vvl.util.ConsList;
 
@@ -21,7 +22,7 @@ public class Cdr implements Operator{
 				return ((Cons<?, ?>) o).right();
 			else if (o instanceof ConsList)
 				return ((ConsList<?>) o).cdr();
-			throw new LispError("Not a Cons");
+			throw new NotACons();
 		} else
 			throw new InvalidNumberOfOperands();
 	}

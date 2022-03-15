@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
+import vvl.lisp.exceptions.NotANumber;
 import vvl.util.ConsList;
 
 public class Plus implements Operator {
@@ -24,7 +25,7 @@ public class Plus implements Operator {
 			} else if (o instanceof BigInteger) {
 				resBigInt = resBigInt.add((BigInteger) o);
 			} else
-				throw new LispError("Not a number");
+				throw new NotANumber();
 		}
 		if (isDouble) {
 			resultDouble += resBigInt.doubleValue();
