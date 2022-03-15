@@ -125,9 +125,9 @@ public class LispImpl implements Lisp {
 	}
 
 	private boolean isList(String expr, int length) throws LispError {
-		if (!expr.contains("(") && !expr.contains(")") && length > 1)
+		if (!expr.contains("(") && length > 1)
 			throw new LispError("Multiple elements must be in a list");
-		else if (!expr.contains("(") && !expr.contains(")") && length == 1)
+		else if (!expr.contains("("))
 			return false;
 		return true;
 	}
