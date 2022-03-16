@@ -1,4 +1,4 @@
-package vvl.lisp.exceptions;
+package vvl.exceptions;
 
 import vvl.lisp.LispError;
 

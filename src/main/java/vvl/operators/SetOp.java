@@ -1,15 +1,15 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vvl.exceptions.InvalidIdentifierException;
+import vvl.exceptions.InvalidNumberOfOperands;
+import vvl.exceptions.UndefinedException;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.InvalidIdentifierException;
-import vvl.lisp.exceptions.InvalidNumberOfOperands;
-import vvl.lisp.exceptions.UndefinedException;
 import vvl.util.ConsList;
 
 public class SetOp implements Operator {

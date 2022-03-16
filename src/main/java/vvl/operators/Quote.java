@@ -1,10 +1,10 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.util.ArrayList;
 
+import vvl.exceptions.InvalidNumberOfOperands;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.InvalidNumberOfOperands;
 
 public class Quote implements Operator {
 

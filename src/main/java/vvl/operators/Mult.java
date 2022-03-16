@@ -1,36 +1,35 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.NotANumber;
 import vvl.util.ConsList;
 
-public class Plus implements Operator {
+public class Mult implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {
-		var resultDouble = 0.0;
-		var resBigInt = BigInteger.ZERO;
+		var resultDouble = 1.0;
+		var resBigInt = BigInteger.ONE;
 		var isDouble = false;
 		for (Object o : list) {
 			if (o instanceof ConsList) {
 				o = lispImpl.evaluate(o);
 			}
 			if (o instanceof Double) {
-				resultDouble += (Double) o;
+				resultDouble *= (Double) o;
 				isDouble = true;
-			} else if (o instanceof BigInteger) {
-				resBigInt = resBigInt.add((BigInteger) o);
-			} else
-				throw new NotANumber();
+			} else {
+				resBigInt = resBigInt.multiply((BigInteger) o);
+			}
 		}
 		if (isDouble) {
-			resultDouble += resBigInt.doubleValue();
+			resultDouble *= resBigInt.doubleValue();
 			return resultDouble;
 		}
 		return resBigInt;
 	}
+
 }

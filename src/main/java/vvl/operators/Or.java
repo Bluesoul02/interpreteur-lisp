@@ -1,11 +1,11 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.util.ArrayList;
 
+import vvl.exceptions.NotABoolean;
 import vvl.lisp.LispBoolean;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.NotABoolean;
 import vvl.util.ConsList;
 
 public class Or implements Operator {

@@ -1,12 +1,12 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import vvl.exceptions.InvalidNumberOfOperands;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.InvalidNumberOfOperands;
 import vvl.util.ConsList;
 
 public class Minus implements Operator {

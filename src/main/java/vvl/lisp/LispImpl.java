@@ -5,28 +5,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import vvl.lisp.exceptions.UndefinedException;
-import vvl.lisp.operators.And;
-import vvl.lisp.operators.Car;
-import vvl.lisp.operators.Cdr;
-import vvl.lisp.operators.ConsOp;
-import vvl.lisp.operators.Define;
-import vvl.lisp.operators.Div;
-import vvl.lisp.operators.Equals;
-import vvl.lisp.operators.GreaterThan;
-import vvl.lisp.operators.GreaterThanOrEquals;
-import vvl.lisp.operators.If;
-import vvl.lisp.operators.LesserThan;
-import vvl.lisp.operators.LesserThanOrEquals;
-import vvl.lisp.operators.ListOp;
-import vvl.lisp.operators.Minus;
-import vvl.lisp.operators.Mult;
-import vvl.lisp.operators.Not;
-import vvl.lisp.operators.Operator;
-import vvl.lisp.operators.Or;
-import vvl.lisp.operators.Plus;
-import vvl.lisp.operators.Quote;
-import vvl.lisp.operators.SetOp;
+import vvl.exceptions.UndefinedException;
+import vvl.operators.And;
+import vvl.operators.Car;
+import vvl.operators.Cdr;
+import vvl.operators.ConsOp;
+import vvl.operators.Define;
+import vvl.operators.Div;
+import vvl.operators.Equals;
+import vvl.operators.GreaterThan;
+import vvl.operators.GreaterThanOrEquals;
+import vvl.operators.If;
+import vvl.operators.Lambda;
+import vvl.operators.LesserThan;
+import vvl.operators.LesserThanOrEquals;
+import vvl.operators.ListOp;
+import vvl.operators.Minus;
+import vvl.operators.Mult;
+import vvl.operators.Not;
+import vvl.operators.Operator;
+import vvl.operators.Or;
+import vvl.operators.Plus;
+import vvl.operators.Quote;
+import vvl.operators.SetOp;
 import vvl.util.ConsList;
 import vvl.util.ConsListFactory;
 import vvl.util.ConsListIterator;
@@ -36,7 +37,7 @@ public class LispImpl implements Lisp {
 	private static final String SET = "set!";
 	private HashMap<String, Operator> operators;
 	private HashMap<String, Object> vars;
-	
+
 	public LispImpl() {
 		operators = new HashMap<>();
 		vars = new HashMap<>();
@@ -58,11 +59,11 @@ public class LispImpl implements Lisp {
 		operators.put("list", new ListOp());
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
+		operators.put("lambda", new Lambda());
 		ArrayList<String> banWords = new ArrayList<>(operators.keySet());
 		banWords.add("nil");
 		banWords.add(DEFINE);
 		banWords.add(SET);
-		banWords.add("lambda");
 		operators.put(DEFINE, new Define(vars, banWords));
 		operators.put(SET, new SetOp(vars, banWords));
 	}
@@ -162,11 +163,10 @@ public class LispImpl implements Lisp {
 	private Object eval(ConsList<Object> consList) throws LispError {
 		ConsListIterator<Object> iterator = (ConsListIterator<Object>) consList.iterator();
 		Object o;
-		String operator;
-		if (iterator.hasNext())
-			operator = (String) iterator.next();
-		else
+		if (!iterator.hasNext())
 			return consList;
+		
+		var operator = iterator.next();
 		ArrayList<Object> operands = new ArrayList<>();
 
 		while (iterator.hasNext()) {
@@ -175,6 +175,9 @@ public class LispImpl implements Lisp {
 				o = vars.get(o);
 			operands.add(o);
 		}
+		if (!(operator instanceof String))
+			throw new LispError(operator.toString().concat(" is not a valid operator"));
+		
 		if (operators.containsKey(operator)) {
 			Object res = operators.get(operator).apply(operands, this);
 			if (res instanceof HashMap<?, ?>) {
@@ -185,6 +188,6 @@ public class LispImpl implements Lisp {
 			} else
 				return res;
 		} else
-			throw new LispError(operator.concat(" is not a valid operator"));
+			throw new UndefinedException((String) operator);
 	}
 }

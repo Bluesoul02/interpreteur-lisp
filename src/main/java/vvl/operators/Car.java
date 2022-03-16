@@ -1,12 +1,12 @@
-package vvl.lisp.operators;
+package vvl.operators;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+import vvl.exceptions.InvalidNumberOfOperands;
+import vvl.exceptions.NotACons;
 import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
-import vvl.lisp.exceptions.InvalidNumberOfOperands;
-import vvl.lisp.exceptions.NotACons;
 import vvl.util.Cons;
 import vvl.util.ConsList;
 
