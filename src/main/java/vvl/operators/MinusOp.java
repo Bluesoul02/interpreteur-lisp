@@ -9,7 +9,7 @@ import vvl.lisp.LispError;
 import vvl.lisp.LispImpl;
 import vvl.util.ConsList;
 
-public class Minus implements Operator {
+public class MinusOp implements Operator {
 
 	@Override
 	public Object apply(ArrayList<Object> list, LispImpl lispImpl) throws LispError {

@@ -20,7 +20,8 @@ import vvl.operators.Lambda;
 import vvl.operators.LesserThan;
 import vvl.operators.LesserThanOrEquals;
 import vvl.operators.ListOp;
-import vvl.operators.Minus;
+import vvl.operators.MapOp;
+import vvl.operators.MinusOp;
 import vvl.operators.Mult;
 import vvl.operators.Not;
 import vvl.operators.Operator;
@@ -42,7 +43,7 @@ public class LispImpl implements Lisp {
 		operators = new HashMap<>();
 		vars = new HashMap<>();
 		operators.put("+", new Plus());
-		operators.put("-", new Minus());
+		operators.put("-", new MinusOp());
 		operators.put("*", new Mult());
 		operators.put("/", new Div());
 		operators.put(">", new GreaterThan());
@@ -60,6 +61,7 @@ public class LispImpl implements Lisp {
 		operators.put("car", new Car());
 		operators.put("cdr", new Cdr());
 		operators.put("lambda", new Lambda());
+		operators.put("map", new MapOp());
 		ArrayList<String> banWords = new ArrayList<>(operators.keySet());
 		banWords.add("nil");
 		banWords.add(DEFINE);
@@ -171,11 +173,11 @@ public class LispImpl implements Lisp {
 
 		while (iterator.hasNext()) {
 			o = iterator.next();
-			if (vars.containsKey(o) && !operator.equals(DEFINE) && !operator.equals(SET))
+			if (vars.containsKey(o) && !operator.equals(DEFINE) && !operator.equals(SET) && !(vars.get(o) instanceof Operator))
 				o = vars.get(o);
 			operands.add(o);
 		}
-		if (!(operator instanceof String))
+		if (!(operator instanceof String) || operator.equals("nil"))
 			throw new LispError(operator.toString().concat(" is not a valid operator"));
 		
 		if (operators.containsKey(operator)) {
@@ -187,7 +189,11 @@ public class LispImpl implements Lisp {
 				return ((HashMap<?, ?>) res).get(operands.get(0));
 			} else
 				return res;
-		} else
+		} else {
+			if (vars.containsKey(operator)) {
+				return ((Operator) vars.get(operator)).apply(operands, this);
+			}
 			throw new UndefinedException((String) operator);
+		}
 	}
 }
