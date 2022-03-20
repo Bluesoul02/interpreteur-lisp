@@ -13,7 +13,7 @@ gradle:
   image: gradle:7.3-jdk11
   stage: build
   script: 
-      - "gradle --warning-mode all $PROXY test pitest"
+      - "gradle --warning-mode all $PROXY test"
       - "gradle $PROXY $SONARINFO sonarqube"
   tags: 
      - docker2
