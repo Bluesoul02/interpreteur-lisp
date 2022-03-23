@@ -154,8 +154,4 @@ public class ConsListImpl<E> implements ConsList<E> {
 		return cons;
 	}
 
-	public void setCons(Cons<E, ConsList<E>> cons) {
-		this.cons = cons;
-	}
-
 }
